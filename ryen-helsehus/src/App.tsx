@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="h-screen bg-slate-300 text-white flex flex-col overflow-hidden py-2 px-4 sm:px-2 gap-2">
       <header className="flex-shrink-0 relative z-50 ">
-        <div className="mx-auto bg-white rounded-2xl shadow-lg flex items-center justify-between px-6 py-3 h-16">
+        <div className="mx-auto bg-stone-100 rounded-2xl shadow-lg flex items-center justify-between px-6 py-3 h-16">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-400/20 text-sky-600 font-semibold">
               RH

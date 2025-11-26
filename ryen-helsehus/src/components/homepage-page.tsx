@@ -18,14 +18,17 @@ export default function HomepagePage({
         }}
       >
         <div className="">
-          <h1 className="text-8xl font-bold mb-4 text-stone-800">
-            Ryen Helsehus
+          <h1
+            className="text-9xl font-bold mb-4 text-indigo-950"
+            style={{ fontFamily: "Greve, sans-serif" }}
+          >
+            RYEN HELSEHUS
           </h1>
         </div>
       </div>
 
       {/* Scrollable content section */}
-      <div className="w-full px-16 sm:px-12 py-12 bg-white">
+      <div className="w-full px-16 sm:px-12 py-12 bg-stone-100">
         <div className="flex gap-8 items-start">
           <div className="w-full">
             <p className="text-xl text-neutral-800 mb-4">
