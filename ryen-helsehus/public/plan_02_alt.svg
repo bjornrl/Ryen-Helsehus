@@ -28,8 +28,7 @@
       }
 
       .cls-3 {
-        fill: #ff0c00;
-        stroke: #fff;
+        fill:rgb(255, 228, 227);
       }
 
       .cls-10 {
@@ -102,7 +101,7 @@
       }
 
       .cls-21 {
-        fill: #0025ff;
+        fill:rgb(188, 192, 214);
       }
     </style>
   </defs>
