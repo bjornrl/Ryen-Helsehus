@@ -1,8 +1,9 @@
 import { useState } from "react";
 import StoryPage from "./components/story-page";
 import CommunityPage from "./components/community-page";
+import AboutPage from "./components/about-page";
 
-type PageKey = "fortelling" | "medvirkning";
+type PageKey = "fortelling" | "medvirkning" | "about";
 
 function App() {
   const [page, setPage] = useState<PageKey>("fortelling");
@@ -46,12 +47,25 @@ function App() {
             >
               Medvirkning
             </button>
+            <button
+              type="button"
+              onClick={() => setPage("about")}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                page === "about"
+                  ? "bg-white text-slate-900 shadow-lg shadow-sky-900/30"
+                  : "text-white/80 hover:bg-white/10"
+              }`}
+            >
+              About this project
+            </button>
           </nav>
         </div>
       </header>
 
       <main className="pt-16">
-        {page === "fortelling" ? <StoryPage /> : <CommunityPage />}
+        {page === "fortelling" && <StoryPage />}
+        {page === "medvirkning" && <CommunityPage />}
+        {page === "about" && <AboutPage />}
       </main>
     </div>
   );

@@ -19,7 +19,7 @@ function InteractiveSVG({
     fetch(src)
       .then((res) => res.text())
       .then((text) => {
-        // Parse SVG and add click handlers to .cls-14 elements
+        // Parse SVG and add click handlers to all .cls elements
         const parser = new DOMParser();
         const svgDoc = parser.parseFromString(text, "image/svg+xml");
         const svgElement = svgDoc.querySelector("svg");
@@ -36,8 +36,9 @@ function InteractiveSVG({
             `${currentStyle} height: 100%; width: auto; display: block;`.trim()
           );
 
-          // Find all elements with class cls-14 and add styling
-          const clickableElements = svgElement.querySelectorAll(".cls-14");
+          // Find all elements with class containing "cls-" and add styling
+          const clickableElements =
+            svgElement.querySelectorAll('[class*="cls-"]');
 
           clickableElements.forEach((element) => {
             // Add cursor pointer style
@@ -63,7 +64,7 @@ function InteractiveSVG({
     const svgElement = svgRef.current.querySelector("svg");
     if (!svgElement) return;
 
-    const clickableElements = svgElement.querySelectorAll(".cls-14");
+    const clickableElements = svgElement.querySelectorAll('[class*="cls-"]');
 
     const handleMouseEnter = (e: Event) => {
       const element = e.target as SVGElement;
@@ -94,7 +95,7 @@ function InteractiveSVG({
       mouseEvent.stopPropagation();
       mouseEvent.preventDefault();
       const element = e.target as SVGElement;
-      console.log("Clicked .cls-14 element:", element); // Debug log
+      console.log("Clicked .cls element:", element); // Debug log
       onElementClick(mouseEvent, element);
     };
 
@@ -137,7 +138,9 @@ export function ExpandableCardDemo() {
   const [clickedElement, setClickedElement] = useState<{
     element: SVGElement;
     position: { x: number; y: number };
+    color: string;
   } | null>(null);
+  const [showInfoPopup, setShowInfoPopup] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const svgContainerRef = useRef<HTMLDivElement>(null);
   const id = useId();
@@ -145,7 +148,11 @@ export function ExpandableCardDemo() {
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setActive(false);
+        if (showInfoPopup) {
+          setShowInfoPopup(false);
+        } else {
+          setActive(false);
+        }
       }
     }
 
@@ -157,9 +164,101 @@ export function ExpandableCardDemo() {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
+  }, [active, showInfoPopup]);
+
+  useOutsideClick(ref, () => {
+    setActive(null);
+    setShowInfoPopup(false);
+  });
+
+  // Reset info popup when active card changes
+  useEffect(() => {
+    setShowInfoPopup(false);
   }, [active]);
 
-  useOutsideClick(ref, () => setActive(null));
+  // Helper function to convert any color format to rgba blended with white at specified opacity
+  const colorToRgba = (color: string, opacity: number = 0.7): string => {
+    // Create a temporary canvas to parse the color
+    const canvas = document.createElement("canvas");
+    canvas.width = 1;
+    canvas.height = 1;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return `rgba(34, 197, 94, ${opacity})`; // fallback to green
+
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, 1, 1);
+    const imageData = ctx.getImageData(0, 0, 1, 1);
+    const r = imageData.data[0];
+    const g = imageData.data[1];
+    const b = imageData.data[2];
+
+    // Blend with white: color * opacity + white * (1 - opacity)
+    const blendedR = Math.round(r * opacity + 255 * (1 - opacity));
+    const blendedG = Math.round(g * opacity + 255 * (1 - opacity));
+    const blendedB = Math.round(b * opacity + 255 * (1 - opacity));
+
+    return `rgba(${blendedR}, ${blendedG}, ${blendedB}, 1)`;
+  };
+
+  // Helper function to extract color from SVG element
+  const getElementColor = (element: SVGElement): string => {
+    // Try to get color from fill attribute first
+    const fill = element.getAttribute("fill");
+    if (fill && fill !== "none" && fill !== "transparent") {
+      return fill;
+    }
+
+    // Try to get color from stroke attribute
+    const stroke = element.getAttribute("stroke");
+    if (stroke && stroke !== "none" && stroke !== "transparent") {
+      return stroke;
+    }
+
+    // Try to get color from style attribute
+    const style = element.getAttribute("style");
+    if (style) {
+      const fillMatch = style.match(/fill:\s*([^;]+)/);
+      if (
+        fillMatch &&
+        fillMatch[1] !== "none" &&
+        fillMatch[1] !== "transparent"
+      ) {
+        return fillMatch[1].trim();
+      }
+      const strokeMatch = style.match(/stroke:\s*([^;]+)/);
+      if (
+        strokeMatch &&
+        strokeMatch[1] !== "none" &&
+        strokeMatch[1] !== "transparent"
+      ) {
+        return strokeMatch[1].trim();
+      }
+    }
+
+    // Try computed style as fallback
+    const computedStyle = window.getComputedStyle(element);
+    const computedFill = computedStyle.fill;
+    if (
+      computedFill &&
+      computedFill !== "none" &&
+      computedFill !== "transparent" &&
+      computedFill !== "rgba(0, 0, 0, 0)"
+    ) {
+      return computedFill;
+    }
+    const computedStroke = computedStyle.stroke;
+    if (
+      computedStroke &&
+      computedStroke !== "none" &&
+      computedStroke !== "transparent" &&
+      computedStroke !== "rgba(0, 0, 0, 0)"
+    ) {
+      return computedStroke;
+    }
+
+    // Default to green if no color found
+    return "#22c55e"; // green-500
+  };
 
   const handleSVGElementClick = (event: MouseEvent, element: SVGElement) => {
     console.log("handleSVGElementClick called", {
@@ -173,10 +272,17 @@ export function ExpandableCardDemo() {
         x: event.clientX - containerRect.left,
         y: event.clientY - containerRect.top,
       };
-      console.log("Setting clicked element with position:", position); // Debug log
+      const color = getElementColor(element);
+      console.log(
+        "Setting clicked element with position:",
+        position,
+        "color:",
+        color
+      ); // Debug log
       setClickedElement({
         element,
         position,
+        color,
       });
     } else {
       console.warn("svgContainerRef.current is null");
@@ -230,7 +336,7 @@ export function ExpandableCardDemo() {
                       height={100}
                       src={card.thumbnail || card.src}
                       alt={card.title}
-                      className="h-40 w-40 md:h-14 md:w-14 rounded-lg object-cover object-top"
+                      className="h-40 w-40 md:h-14 md:w-14 rounded-lg object-cover object-top transition-all duration-200 hover:brightness-75 dark:hover:brightness-50"
                       loading="lazy"
                       decoding="async"
                     />
@@ -250,16 +356,6 @@ export function ExpandableCardDemo() {
                     </motion.p>
                   </div>
                 </div>
-                <motion.button
-                  layoutId={`button-${card.title}-${id}`}
-                  className={`px-4 py-2 text-sm rounded-full font-bold mt-4 md:mt-0 transition-colors ${
-                    isActive
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-100 hover:bg-green-500 hover:text-white text-black dark:bg-gray-700 dark:text-white"
-                  }`}
-                >
-                  {card.ctaText}
-                </motion.button>
               </motion.div>
             );
           })}
@@ -312,11 +408,28 @@ export function ExpandableCardDemo() {
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[80%] h-screen flex flex-row bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
+              className="w-full max-w-[80%] h-screen bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden flex flex-col"
             >
+              {/* Header with title and info button */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800">
+                <motion.h3
+                  layoutId={`title-${active.title}-${id}`}
+                  className="font-bold text-neutral-700 dark:text-neutral-200 text-2xl"
+                >
+                  {active.title}
+                </motion.h3>
+                <button
+                  onClick={() => setShowInfoPopup(true)}
+                  className="px-4 py-2 text-sm rounded-full font-semibold bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-200 transition-colors"
+                >
+                  Info
+                </button>
+              </div>
+
+              {/* Image container */}
               <motion.div
                 layoutId={`image-${active.title}-${id}`}
-                className="flex h-full relative"
+                className="flex-1 relative overflow-hidden"
                 ref={svgContainerRef}
               >
                 {active.src.endsWith(".svg") ? (
@@ -343,11 +456,13 @@ export function ExpandableCardDemo() {
                       initial={{ opacity: 0, scale: 0.8, y: 10 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                      className="absolute bg-white dark:bg-neutral-800 border-2 border-green-500 rounded-lg shadow-xl p-4 max-w-xs z-50 pointer-events-auto"
+                      className="absolute border-2 rounded-lg shadow-xl p-4 max-w-xs z-50 pointer-events-auto"
                       style={{
                         left: `${clickedElement.position.x}px`,
                         top: `${clickedElement.position.y}px`,
                         transform: "translate(-50%, calc(-100% - 10px))",
+                        borderColor: clickedElement.color,
+                        backgroundColor: colorToRgba(clickedElement.color, 0.7),
                       }}
                       onClick={(e) => e.stopPropagation()}
                     >
@@ -361,52 +476,61 @@ export function ExpandableCardDemo() {
                         Element Info
                       </h4>
                       <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                        You clicked on a .cls-14 element. Add your custom
-                        content here!
+                        You clicked on a .cls element. Add your custom content
+                        here!
                       </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </motion.div>
 
-              <div className="flex-1 flex flex-col p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <motion.h3
-                      layoutId={`title-${active.title}-${id}`}
-                      className="font-bold text-neutral-700 dark:text-neutral-200 text-2xl mb-2"
+              {/* Info popup */}
+              <AnimatePresence>
+                {showInfoPopup && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 bg-black/50 z-[200]"
+                      onClick={() => setShowInfoPopup(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[80vh] bg-white dark:bg-neutral-900 rounded-lg shadow-2xl z-[201] overflow-hidden flex flex-col"
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      {active.title}
-                    </motion.h3>
-                    <motion.p
-                      layoutId={`description-${active.description}-${id}`}
-                      className="text-neutral-600 dark:text-neutral-400 text-lg"
-                    >
-                      {active.description}
-                    </motion.p>
-                  </div>
-
-                  <motion.a
-                    layoutId={`button-${active.title}-${id}`}
-                    href={active.ctaLink}
-                    target="_blank"
-                    className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white hover:bg-green-600 transition-colors"
-                  >
-                    {active.ctaText}
-                  </motion.a>
-                </div>
-                <motion.div
-                  layout
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-neutral-600 text-sm md:text-base flex-1 overflow-y-auto dark:text-neutral-400 pr-4"
-                >
-                  {typeof active.content === "function"
-                    ? active.content()
-                    : active.content}
-                </motion.div>
-              </div>
+                      <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800">
+                        <motion.p
+                          layoutId={`description-${active.description}-${id}`}
+                          className="text-neutral-600 dark:text-neutral-400 text-lg font-semibold"
+                        >
+                          {active.description}
+                        </motion.p>
+                        <button
+                          onClick={() => setShowInfoPopup(false)}
+                          className="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-2xl leading-none w-8 h-8 flex items-center justify-center"
+                        >
+                          ×
+                        </button>
+                      </div>
+                      <motion.div
+                        layout
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="text-neutral-600 text-sm md:text-base flex-1 overflow-y-auto p-6 dark:text-neutral-400"
+                      >
+                        {typeof active.content === "function"
+                          ? active.content()
+                          : active.content}
+                      </motion.div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
             </motion.div>
           </div>
         ) : null}
@@ -450,8 +574,8 @@ export const CloseIcon = () => {
 
 const cards = [
   {
-    description: "Plan 01 - Kantine og handel",
-    title: "Plan 01",
+    description: "Kantine og handel",
+    title: "Første etasje",
     src: "/plan_01.svg",
     thumbnail: "/plan_01.svg", // Smaller thumbnail for sidebar
     ctaText: "Se mer",
@@ -477,10 +601,10 @@ const cards = [
     },
   },
   {
-    description: "Plan 02 - Verksted og kontor",
-    title: "Plan 02",
-    src: "/plan-02.svg",
-    thumbnail: "/plan-02-thumb.svg", // Smaller thumbnail for sidebar
+    description: "Verksted og kontor",
+    title: "Andre etasje",
+    src: "/plan_02.svg",
+    thumbnail: "/plan_02.svg", // Smaller thumbnail for sidebar
     ctaText: "Se mer",
     ctaLink: "#",
     content: () => {
@@ -505,10 +629,10 @@ const cards = [
     },
   },
   {
-    description: "Plan 03 - Produksjon og behandling",
-    title: "Plan 03",
-    src: "/plan-03.svg",
-    thumbnail: "/plan-03-thumb.svg", // Smaller thumbnail for sidebar
+    description: "Produksjon og behandling",
+    title: "Tredje etasje",
+    src: "/plan_03.svg",
+    thumbnail: "/plan_03.svg", // Smaller thumbnail for sidebar
     ctaText: "Se mer",
     ctaLink: "#",
     content: () => {
