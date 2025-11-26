@@ -28,12 +28,22 @@ const clickableClassesByFile: Record<string, string[]> = {
     "cls-1", // Kantine (light gray)
     "cls-20", // Red element
     "cls-4", // Red stroke element
+    "cls-21", // Mauve/pink element
+    "cls-18", // Light blue/gray element
   ],
-  "plan_02.svg": [
-    // Add clickable classes for plan_02.svg here
+  "plan_02_alt.svg": [
+    "cls-3", // gåsone
+    "cls-21", // vareheis
+    "cls-16", // Back Office
+    "cls-14", // ventesone
+    "cls-13", // verksted
   ],
-  "plan_03.svg": [
-    // Add clickable classes for plan_03.svg here
+  "plan_03_alt.svg": [
+    "cls-12", // stillerom
+    "cls-15", // åpent landskap
+    "cls-6", // kontor/pasientfri sone
+    "cls-13", // verksted
+    "cls-22", // ansatt-kjøkken
   ],
 };
 
@@ -128,26 +138,60 @@ function InteractiveSVG({
 
     const handleMouseEnter = (e: Event) => {
       const element = e.target as SVGElement;
-      const hoverStyle = element.getAttribute("style") || "";
-      element.setAttribute(
-        "style",
-        `${hoverStyle.replace(
-          /opacity:\s*[^;]+;?/g,
-          ""
-        )} cursor: pointer; opacity: 0.8;`.trim()
-      );
+      // Get the class name(s) from the hovered element
+      const classList = Array.from(element.classList);
+      const clsClass = classList.find((cls) => cls.startsWith("cls-"));
+
+      if (clsClass) {
+        // Find all elements with the same class and apply hover state
+        const sameClassElements = Array.from(
+          svgElement.querySelectorAll(`.${clsClass}`)
+        ).filter((el) => {
+          // Only apply to clickable elements
+          const elClassList = Array.from(el.classList);
+          return clickableClasses.some((cls) => elClassList.includes(cls));
+        });
+
+        sameClassElements.forEach((el) => {
+          const hoverStyle = el.getAttribute("style") || "";
+          el.setAttribute(
+            "style",
+            `${hoverStyle.replace(
+              /filter:\s*[^;]+;?/g,
+              ""
+            )} cursor: pointer; filter: brightness(0.7);`.trim()
+          );
+        });
+      }
     };
 
     const handleMouseLeave = (e: Event) => {
       const element = e.target as SVGElement;
-      const leaveStyle = element.getAttribute("style") || "";
-      element.setAttribute(
-        "style",
-        `${leaveStyle.replace(
-          /opacity:\s*[^;]+;?/g,
-          ""
-        )} cursor: pointer; opacity: 1;`.trim()
-      );
+      // Get the class name(s) from the hovered element
+      const classList = Array.from(element.classList);
+      const clsClass = classList.find((cls) => cls.startsWith("cls-"));
+
+      if (clsClass) {
+        // Find all elements with the same class and remove hover state
+        const sameClassElements = Array.from(
+          svgElement.querySelectorAll(`.${clsClass}`)
+        ).filter((el) => {
+          // Only apply to clickable elements
+          const elClassList = Array.from(el.classList);
+          return clickableClasses.some((cls) => elClassList.includes(cls));
+        });
+
+        sameClassElements.forEach((el) => {
+          const leaveStyle = el.getAttribute("style") || "";
+          el.setAttribute(
+            "style",
+            `${leaveStyle.replace(
+              /filter:\s*[^;]+;?/g,
+              ""
+            )} cursor: pointer;`.trim()
+          );
+        });
+      }
     };
 
     const handleClick = (e: Event) => {
@@ -785,8 +829,8 @@ const cards: Array<{
   {
     description: secondFloorCard.description,
     title: secondFloorCard.title,
-    src: "/plan_02.svg",
-    thumbnail: "/plan_02.svg", // Smaller thumbnail for sidebar
+    src: "/plan_02_alt.svg",
+    thumbnail: "/plan_02_alt.svg", // Smaller thumbnail for sidebar
     ctaText: "Se mer",
     ctaLink: "#",
     content: secondFloorCard.content,
@@ -794,8 +838,8 @@ const cards: Array<{
   {
     description: thirdFloorCard.description,
     title: thirdFloorCard.title,
-    src: "/plan_03.svg",
-    thumbnail: "/plan_03.svg", // Smaller thumbnail for sidebar
+    src: "/plan_03_alt.svg",
+    thumbnail: "/plan_03_alt.svg", // Smaller thumbnail for sidebar
     ctaText: "Se mer",
     ctaLink: "#",
     content: thirdFloorCard.content,

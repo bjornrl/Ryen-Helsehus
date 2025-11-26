@@ -66,22 +66,72 @@ export const elementPopupTextsMap: Record<
       title: "Rødt område",
       description: "Legg til beskrivelse for rødt område her.",
     },
+    "cls-21": {
+      // Mauve/pink element
+      title: "Område",
+      description: "Legg til beskrivelse for område her.",
+    },
+    "cls-18": {
+      // Light blue/gray element
+      title: "Område",
+      description: "Legg til beskrivelse for område her.",
+    },
   },
-  // Plan 02 (Andre etasje)
-  "plan_02.svg": {
-    "cls-2": {
+  // Plan 02 Alt (Andre etasje)
+  "plan_02_alt.svg": {
+    "cls-3": {
+      // gåsone
+      title: "Gåsone",
+      description: "Legg til beskrivelse for gåsone her.",
+    },
+    "cls-21": {
+      // vareheis
+      title: "Vareheis",
+      description: "Legg til beskrivelse for vareheis her.",
+    },
+    "cls-16": {
+      // Back Office
+      title: "Back Office",
+      description: "Legg til beskrivelse for Back Office her.",
+    },
+    "cls-14": {
+      // ventesone
+      title: "Ventesone",
+      description: "Legg til beskrivelse for ventesone her.",
+    },
+    "cls-13": {
+      // verksted
       title: "Verksted",
-      description: "Verkstedet på 150 m² har plass til 16 teknikere.",
+      description: "Legg til beskrivelse for verksted her.",
     },
-    // Add more entries for plan_02.svg here
   },
-  // Plan 03 (Tredje etasje)
-  "plan_03.svg": {
-    "cls-2": {
-      title: "Produksjon",
-      description: "Produksjonsrommet på 150 m² med plastrom.",
+  // Plan 03 Alt (Tredje etasje)
+  "plan_03_alt.svg": {
+    "cls-12": {
+      // stillerom
+      title: "Stillerom",
+      description: "Legg til beskrivelse for stillerom her.",
     },
-    // Add more entries for plan_03.svg here
+    "cls-15": {
+      // åpent landskap
+      title: "Åpent landskap",
+      description: "Legg til beskrivelse for åpent landskap her.",
+    },
+    "cls-6": {
+      // kontor/pasientfri sone
+      title: "Kontor/Pasientfri sone",
+      description: "Legg til beskrivelse for kontor/pasientfri sone her.",
+    },
+    "cls-13": {
+      // verksted
+      title: "Verksted",
+      description: "Legg til beskrivelse for verksted her.",
+    },
+    "cls-22": {
+      // ansatt-kjøkken
+      title: "Ansatt-kjøkken",
+      description: "Legg til beskrivelse for ansatt-kjøkken her.",
+    },
   },
 };
 
