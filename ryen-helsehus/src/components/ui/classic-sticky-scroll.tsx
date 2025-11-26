@@ -68,7 +68,7 @@ export function ClassicStickyScroll({ items }: ClassicStickyScrollProps) {
       </div>
 
       <div className="relative z-20">
-        <div className="max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6">
           {items.map((item, index) => (
             <div
               key={`content-${index}`}
