@@ -1,12 +1,41 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/use-outside-click";
+import {
+  defaultElementPopupTexts,
+  elementPopupTextsMap,
+  backgroundPopupTexts,
+  firstFloorCard,
+  secondFloorCard,
+  thirdFloorCard,
+} from "./medvirkning-texts";
 
 // Feature flag: Enable/disable background click (white space) functionality
 // Set to false to completely remove this feature
 const ENABLE_BACKGROUND_CLICK = false;
+
+// Whitelist of clickable class names per SVG file
+// Only elements with these classes will be clickable
+const clickableClassesByFile: Record<string, string[]> = {
+  "plan_01_alt.svg": [
+    "cls-14", // skosalg (dark brown)
+    "cls-13", // felles inngang (blue)
+    "cls-17", // kafe (light gray)
+    "cls-16", // møtesenter/samhandling (yellow)
+    "cls-15", // Kantine (light green)
+    "cls-1", // Kantine (light gray)
+    "cls-20", // Red element
+    "cls-4", // Red stroke element
+  ],
+  "plan_02.svg": [
+    // Add clickable classes for plan_02.svg here
+  ],
+  "plan_03.svg": [
+    // Add clickable classes for plan_03.svg here
+  ],
+};
 
 // Interactive SVG Component
 function InteractiveSVG({
@@ -15,7 +44,11 @@ function InteractiveSVG({
   onBackgroundClick,
 }: {
   src: string;
-  onElementClick: (event: MouseEvent, element: SVGElement) => void;
+  onElementClick: (
+    event: MouseEvent,
+    element: SVGElement,
+    filePath: string
+  ) => void;
   onBackgroundClick?: (event: MouseEvent) => void;
 }) {
   const enableBackgroundClick = ENABLE_BACKGROUND_CLICK && !!onBackgroundClick;
@@ -43,9 +76,18 @@ function InteractiveSVG({
             `${currentStyle} height: 100%; width: auto; display: block;`.trim()
           );
 
-          // Find all elements with class containing "cls-" and add styling
-          const clickableElements =
-            svgElement.querySelectorAll('[class*="cls-"]');
+          // Extract file name from path to get whitelist
+          const fileName = src.split("/").pop() || "";
+          const clickableClasses = clickableClassesByFile[fileName] || [];
+
+          // Find only elements with whitelisted classes
+          const clickableElements = Array.from(
+            svgElement.querySelectorAll('[class*="cls-"]')
+          ).filter((element) => {
+            const classList = Array.from(element.classList);
+            // Check if element has any of the whitelisted classes
+            return clickableClasses.some((cls) => classList.includes(cls));
+          });
 
           clickableElements.forEach((element) => {
             // Add cursor pointer style
@@ -71,7 +113,18 @@ function InteractiveSVG({
     const svgElement = svgRef.current.querySelector("svg");
     if (!svgElement) return;
 
-    const clickableElements = svgElement.querySelectorAll('[class*="cls-"]');
+    // Extract file name from path to get whitelist
+    const fileName = src.split("/").pop() || "";
+    const clickableClasses = clickableClassesByFile[fileName] || [];
+
+    // Find only elements with whitelisted classes
+    const clickableElements = Array.from(
+      svgElement.querySelectorAll('[class*="cls-"]')
+    ).filter((element) => {
+      const classList = Array.from(element.classList);
+      // Check if element has any of the whitelisted classes
+      return clickableClasses.some((cls) => classList.includes(cls));
+    });
 
     const handleMouseEnter = (e: Event) => {
       const element = e.target as SVGElement;
@@ -103,7 +156,7 @@ function InteractiveSVG({
       mouseEvent.preventDefault();
       const element = e.target as SVGElement;
       console.log("Clicked .cls element:", element); // Debug log
-      onElementClick(mouseEvent, element);
+      onElementClick(mouseEvent, element, src);
     };
 
     clickableElements.forEach((element) => {
@@ -176,6 +229,8 @@ export function ExpandableCardDemo() {
     element: SVGElement;
     position: { x: number; y: number };
     color: string;
+    title: string;
+    description: string;
   } | null>(null);
 
   // FEATURE: Background Click - State for white space clicks
@@ -313,10 +368,15 @@ export function ExpandableCardDemo() {
     return "#22c55e"; // green-500
   };
 
-  const handleSVGElementClick = (event: MouseEvent, element: SVGElement) => {
+  const handleSVGElementClick = (
+    event: MouseEvent,
+    element: SVGElement,
+    filePath: string
+  ) => {
     console.log("handleSVGElementClick called", {
       event,
       element,
+      filePath,
       svgContainerRef: svgContainerRef.current,
     }); // Debug log
     if (svgContainerRef.current) {
@@ -326,16 +386,39 @@ export function ExpandableCardDemo() {
         y: event.clientY - containerRect.top,
       };
       const color = getElementColor(element);
+
+      // Extract file name from path (e.g., "/plan_01.svg" -> "plan_01.svg")
+      const fileName = filePath.split("/").pop() || "";
+
+      // Get the class name(s) from the element to identify which text to use
+      const classList = Array.from(element.classList);
+      const clsClass = classList.find((cls) => cls.startsWith("cls-"));
+
+      // Look up text for this specific file and element, or use default
+      let elementTexts = defaultElementPopupTexts;
+      if (clsClass && fileName && elementPopupTextsMap[fileName]) {
+        const fileTexts = elementPopupTextsMap[fileName];
+        if (fileTexts[clsClass]) {
+          elementTexts = fileTexts[clsClass];
+        }
+      }
+
       console.log(
         "Setting clicked element with position:",
         position,
         "color:",
-        color
+        color,
+        "file:",
+        fileName,
+        "class:",
+        clsClass
       ); // Debug log
       setClickedElement({
         element,
         position,
         color,
+        title: elementTexts.title,
+        description: elementTexts.description,
       });
     } else {
       console.warn("svgContainerRef.current is null");
@@ -548,11 +631,10 @@ export function ExpandableCardDemo() {
                         ×
                       </button>
                       <h4 className="font-bold text-neutral-700 dark:text-neutral-200 mb-2 pr-6">
-                        Element Info
+                        {clickedElement.title}
                       </h4>
                       <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                        You clicked on a .cls element. Add your custom content
-                        here!
+                        {clickedElement.description}
                       </p>
                     </motion.div>
                   )}
@@ -583,11 +665,10 @@ export function ExpandableCardDemo() {
                           ×
                         </button>
                         <h4 className="font-bold text-neutral-700 dark:text-neutral-200 mb-2 pr-6">
-                          Område Info
+                          {backgroundPopupTexts.title}
                         </h4>
                         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                          Du klikket på et område. Legg til din tilpassede
-                          innhold her!
+                          {backgroundPopupTexts.description}
                         </p>
                       </motion.div>
                     )}
@@ -683,88 +764,40 @@ export const CloseIcon = () => {
   );
 };
 
-const cards = [
+const cards: Array<{
+  description: string;
+  title: string;
+  src: string;
+  thumbnail: string;
+  ctaText: string;
+  ctaLink: string;
+  content: () => React.ReactNode;
+}> = [
   {
-    description: "Kantine og handel",
-    title: "Første etasje",
-    src: "/plan_01.svg",
-    thumbnail: "/plan_01.svg", // Smaller thumbnail for sidebar
+    description: firstFloorCard.description,
+    title: firstFloorCard.title,
+    src: "/plan_01_alt.svg",
+    thumbnail: "/plan_01_alt.svg", // Smaller thumbnail for sidebar
     ctaText: "Se mer",
     ctaLink: "#",
-    content: () => {
-      return (
-        <div>
-          <p className="mb-4">
-            Plan 01 viser første etasje med kantineområdet og handelsområder.
-            Her finner du kantine på 270 m², matesenter for samhandling, og
-            handelsområder med skosalg.
-          </p>
-          <p className="mb-4">
-            Hovedinngangen og resepsjonen på 50 m² gir velkommen til besøkende,
-            mens kaféen på 120 m² tilbyr et hyggelig møtested.
-          </p>
-          <p>
-            Dette er etasjen som binder sammen byggets ulike funksjoner og
-            skaper et levende og inkluderende miljø.
-          </p>
-        </div>
-      );
-    },
+    content: firstFloorCard.content,
   },
   {
-    description: "Verksted og kontor",
-    title: "Andre etasje",
+    description: secondFloorCard.description,
+    title: secondFloorCard.title,
     src: "/plan_02.svg",
     thumbnail: "/plan_02.svg", // Smaller thumbnail for sidebar
     ctaText: "Se mer",
     ctaLink: "#",
-    content: () => {
-      return (
-        <div>
-          <p className="mb-4">
-            Plan 02 fokuserer på verksteds- og kontorområder. Verkstedet på 150
-            m² har plass til 16 teknikere med arbeidsplasser, mens sliperommet
-            på 30 m² huser store hjelpemidler.
-          </p>
-          <p className="mb-4">
-            Åpne landskap med 22 og 10 plasser gir fleksible arbeidsmiljøer, og
-            stillerom gir mulighet for konsentrert arbeid. 10 prøverom og
-            ventesone for pasienter på ca. 40 m² sikrer gode pasientforløp.
-          </p>
-          <p>
-            Sosial sone på 60 m² og kontor med sentralbord skaper gode
-            arbeidsforhold for ansatte.
-          </p>
-        </div>
-      );
-    },
+    content: secondFloorCard.content,
   },
   {
-    description: "Produksjon og behandling",
-    title: "Tredje etasje",
+    description: thirdFloorCard.description,
+    title: thirdFloorCard.title,
     src: "/plan_03.svg",
     thumbnail: "/plan_03.svg", // Smaller thumbnail for sidebar
     ctaText: "Se mer",
     ctaLink: "#",
-    content: () => {
-      return (
-        <div>
-          <p className="mb-4">
-            Plan 03 inneholder produksjonsrommet på 150 m² med plastrom, samt
-            sliperom for store hjelpemidler. Kontorområdet har 6 lederkontorer
-            og åpne landskap med 10 plasser på 60 m².
-          </p>
-          <p className="mb-4">
-            Behandlingsområdet inkluderer legerom på 15 m², fysiorom på 30 og 40
-            m², samt 10 prøverom. Ventesone for pasienter på ca. 40 m² gir en
-            rolig mottak.
-          </p>
-          <p>
-            Atriet utendørs skaper et naturlig møtepunkt og gir lys og luft til
-            bygget.
-          </p>
-        </div>
-      );
-    },
+    content: thirdFloorCard.content,
   },
 ];
