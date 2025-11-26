@@ -4,14 +4,21 @@ import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 
+// Feature flag: Enable/disable background click (white space) functionality
+// Set to false to completely remove this feature
+const ENABLE_BACKGROUND_CLICK = false;
+
 // Interactive SVG Component
 function InteractiveSVG({
   src,
   onElementClick,
+  onBackgroundClick,
 }: {
   src: string;
   onElementClick: (event: MouseEvent, element: SVGElement) => void;
+  onBackgroundClick?: (event: MouseEvent) => void;
 }) {
+  const enableBackgroundClick = ENABLE_BACKGROUND_CLICK && !!onBackgroundClick;
   const svgRef = useRef<HTMLDivElement>(null);
   const [svgContent, setSvgContent] = useState<string>("");
 
@@ -105,14 +112,44 @@ function InteractiveSVG({
       element.addEventListener("click", handleClick);
     });
 
+    // Handle clicks on SVG background (white space) - FEATURE: Background Click
+    let handleBackgroundClick: ((e: MouseEvent) => void) | null = null;
+    if (enableBackgroundClick) {
+      handleBackgroundClick = (e: MouseEvent) => {
+        const target = e.target as SVGElement;
+
+        // Check if we clicked on a clickable cls element (these have their own handlers)
+        const isClickableElement = Array.from(clickableElements).some(
+          (el) => el === target || el.contains(target)
+        );
+
+        // Only handle background clicks if it's not a clickable element
+        if (!isClickableElement && onBackgroundClick) {
+          // Check if click is on the SVG itself or a non-clickable element
+          if (
+            target === svgElement ||
+            !target.getAttribute("class")?.includes("cls-")
+          ) {
+            e.stopPropagation();
+            onBackgroundClick(e);
+          }
+        }
+      };
+
+      svgElement.addEventListener("click", handleBackgroundClick);
+    }
+
     return () => {
       clickableElements.forEach((element) => {
         element.removeEventListener("mouseenter", handleMouseEnter);
         element.removeEventListener("mouseleave", handleMouseLeave);
         element.removeEventListener("click", handleClick);
       });
+      if (handleBackgroundClick) {
+        svgElement.removeEventListener("click", handleBackgroundClick);
+      }
     };
-  }, [svgContent, onElementClick]);
+  }, [svgContent, onElementClick, onBackgroundClick, enableBackgroundClick]);
 
   if (!svgContent) {
     return (
@@ -140,6 +177,12 @@ export function ExpandableCardDemo() {
     position: { x: number; y: number };
     color: string;
   } | null>(null);
+
+  // FEATURE: Background Click - State for white space clicks
+  const [backgroundClick, setBackgroundClick] = useState<{
+    position: { x: number; y: number };
+  } | null>(null);
+
   const [showInfoPopup, setShowInfoPopup] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const svgContainerRef = useRef<HTMLDivElement>(null);
@@ -169,11 +212,21 @@ export function ExpandableCardDemo() {
   useOutsideClick(ref, () => {
     setActive(null);
     setShowInfoPopup(false);
+    // FEATURE: Background Click
+    if (ENABLE_BACKGROUND_CLICK) {
+      setBackgroundClick(null);
+    }
+    setClickedElement(null);
   });
 
-  // Reset info popup when active card changes
+  // Reset popups when active card changes
   useEffect(() => {
     setShowInfoPopup(false);
+    // FEATURE: Background Click
+    if (ENABLE_BACKGROUND_CLICK) {
+      setBackgroundClick(null);
+    }
+    setClickedElement(null);
   }, [active]);
 
   // Helper function to convert any color format to rgba blended with white at specified opacity
@@ -289,24 +342,45 @@ export function ExpandableCardDemo() {
     }
   };
 
+  // FEATURE: Background Click - Handler for white space clicks
+  const handleSVGBackgroundClick = ENABLE_BACKGROUND_CLICK
+    ? (event: MouseEvent) => {
+        if (svgContainerRef.current) {
+          const containerRect = svgContainerRef.current.getBoundingClientRect();
+          const position = {
+            x: event.clientX - containerRect.left,
+            y: event.clientY - containerRect.top,
+          };
+          setBackgroundClick({ position });
+        }
+      }
+    : undefined;
+
   // Close textbox when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
-        clickedElement &&
         svgContainerRef.current &&
         !svgContainerRef.current.contains(e.target as Node)
       ) {
-        setClickedElement(null);
+        if (clickedElement) {
+          setClickedElement(null);
+        }
+        // FEATURE: Background Click
+        if (ENABLE_BACKGROUND_CLICK && backgroundClick) {
+          setBackgroundClick(null);
+        }
       }
     };
 
-    if (clickedElement) {
+    const hasOpenPopups =
+      clickedElement || (ENABLE_BACKGROUND_CLICK && backgroundClick);
+    if (hasOpenPopups) {
       document.addEventListener("mousedown", handleClickOutside);
       return () =>
         document.removeEventListener("mousedown", handleClickOutside);
     }
-  }, [clickedElement]);
+  }, [clickedElement, backgroundClick]);
 
   return (
     <div className="flex h-screen bg-white dark:bg-neutral-950 overflow-hidden">
@@ -436,6 +510,7 @@ export function ExpandableCardDemo() {
                   <InteractiveSVG
                     src={active.src}
                     onElementClick={handleSVGElementClick}
+                    onBackgroundClick={handleSVGBackgroundClick}
                   />
                 ) : (
                   <img
@@ -482,6 +557,42 @@ export function ExpandableCardDemo() {
                     </motion.div>
                   )}
                 </AnimatePresence>
+
+                {/* FEATURE: Background Click - Textbox overlay for background click (white space) */}
+                {ENABLE_BACKGROUND_CLICK && (
+                  <AnimatePresence>
+                    {backgroundClick && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                        className="absolute border-2 rounded-lg shadow-xl p-4 max-w-xs z-50 pointer-events-auto"
+                        style={{
+                          left: `${backgroundClick.position.x}px`,
+                          top: `${backgroundClick.position.y}px`,
+                          transform: "translate(-50%, calc(-100% - 10px))",
+                          borderColor: "#6b7280", // neutral-500
+                          backgroundColor: colorToRgba("#6b7280", 0.7),
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <button
+                          onClick={() => setBackgroundClick(null)}
+                          className="absolute top-2 right-2 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-xl leading-none w-5 h-5 flex items-center justify-center"
+                        >
+                          ×
+                        </button>
+                        <h4 className="font-bold text-neutral-700 dark:text-neutral-200 mb-2 pr-6">
+                          Område Info
+                        </h4>
+                        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                          Du klikket på et område. Legg til din tilpassede
+                          innhold her!
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                )}
               </motion.div>
 
               {/* Info popup */}
