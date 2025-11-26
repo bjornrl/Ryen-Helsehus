@@ -48,8 +48,8 @@ export function ClassicStickyScroll({ items }: ClassicStickyScrollProps) {
   }, [items.length]);
 
   return (
-    <div className="relative scroll-smooth">
-      <div className="fixed inset-0 h-screen w-full overflow-hidden">
+    <div className="relative scroll-smooth h-full overflow-auto">
+      <div className="fixed inset-0 h-screen w-full overflow-hidden z-0">
         {items.map((item, index) => (
           <div
             key={`image-${index}`}
@@ -75,7 +75,7 @@ export function ClassicStickyScroll({ items }: ClassicStickyScrollProps) {
               ref={(el) => {
                 sectionRefs.current[index] = el;
               }}
-              className="relative flex h-screen snap-start flex-col justify-end pb-8 sm:pb-12"
+              className="relative flex h-[calc(100vh-4rem)] snap-start flex-col justify-end pb-8 sm:pb-12"
             >
               <div className="max-w-md rounded-md border border-white/20 p-6 shadow-2xl backdrop-blur-md sm:p-8">
                 <div className="mb-4 flex items-center gap-3">

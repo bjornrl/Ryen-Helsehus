@@ -136,7 +136,7 @@ export function StickyScroll({ items }: StickyScrollProps) {
     <div className="relative scroll-smooth bg-slate-950">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(56,189,248,0.12),transparent_30%),radial-gradient(circle_at_85%_10%,rgba(255,255,255,0.06),transparent_28%)]" />
       <div className="relative mx-auto max-w-6xl px-6 pb-24 sm:px-10 lg:px-12">
-        <div className="flex min-h-screen items-center justify-center">
+        <div className="flex h-screen items-center justify-center">
           <div className="w-full max-w-4xl">
             <div className="sticky top-24">
               <LayerStack items={items} activeIndex={activeIndex} />
@@ -151,7 +151,7 @@ export function StickyScroll({ items }: StickyScrollProps) {
             ref={(el) => {
               sectionRefs.current[index] = el as HTMLDivElement | null;
             }}
-            className="min-h-screen snap-start"
+            className="h-[90vh] snap-start"
           />
         ))}
       </div>

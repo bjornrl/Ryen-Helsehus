@@ -9,8 +9,8 @@ function App() {
   const [page, setPage] = useState<PageKey>("fortelling");
 
   return (
-    <div className="min-h-screen text-white">
-      <header className="fixed inset-x-0 top-0 z-30 border-b border-white/10 bg-slate-950/60 backdrop-blur">
+    <div className="h-screen text-white flex flex-col overflow-hidden">
+      <header className="border-b border-white/10 bg-slate-950/60 backdrop-blur flex-shrink-0 relative z-50">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:px-10">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-400/20 text-sky-200 font-semibold">
@@ -62,7 +62,11 @@ function App() {
         </div>
       </header>
 
-      <main className="pt-16">
+      <main
+        className={`flex-1 ${
+          page === "about" ? "overflow-auto" : "overflow-hidden"
+        }`}
+      >
         {page === "fortelling" && <StoryPage />}
         {page === "medvirkning" && <CommunityPage />}
         {page === "about" && <AboutPage />}

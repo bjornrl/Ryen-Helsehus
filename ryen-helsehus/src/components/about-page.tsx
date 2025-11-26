@@ -28,6 +28,10 @@ const storyContent = [
 ];
 
 export default function AboutPage() {
-  return <ClassicStickyScroll items={storyContent} />;
+  return (
+    <div className="h-full">
+      <ClassicStickyScroll items={storyContent} />
+    </div>
+  );
 }
 
