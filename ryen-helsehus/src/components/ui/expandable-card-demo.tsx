@@ -16,11 +16,14 @@ import {
 // Set to false to completely remove this feature
 const ENABLE_BACKGROUND_CLICK = false;
 
+// Feature flag: Enable/disable info button functionality
+// Set to false to completely remove this feature
+const ENABLE_INFO_BUTTON = false;
+
 // Whitelist of clickable class names per SVG file
 // Only elements with these classes will be clickable
 const clickableClassesByFile: Record<string, string[]> = {
   "plan_01_alt.svg": [
-    "cls-14", // skosalg (dark brown)
     "cls-13", // felles inngang (blue)
     "cls-17", // kafe (light gray)
     "cls-16", // møtesenter/samhandling (yellow)
@@ -275,6 +278,7 @@ export function ExpandableCardDemo() {
     color: string;
     title: string;
     description: string;
+    image?: string;
   } | null>(null);
 
   // FEATURE: Background Click - State for white space clicks
@@ -290,7 +294,7 @@ export function ExpandableCardDemo() {
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        if (showInfoPopup) {
+        if (ENABLE_INFO_BUTTON && showInfoPopup) {
           setShowInfoPopup(false);
         } else {
           setActive(false);
@@ -310,7 +314,9 @@ export function ExpandableCardDemo() {
 
   useOutsideClick(ref, () => {
     setActive(null);
-    setShowInfoPopup(false);
+    if (ENABLE_INFO_BUTTON) {
+      setShowInfoPopup(false);
+    }
     // FEATURE: Background Click
     if (ENABLE_BACKGROUND_CLICK) {
       setBackgroundClick(null);
@@ -320,7 +326,9 @@ export function ExpandableCardDemo() {
 
   // Reset popups when active card changes
   useEffect(() => {
-    setShowInfoPopup(false);
+    if (ENABLE_INFO_BUTTON) {
+      setShowInfoPopup(false);
+    }
     // FEATURE: Background Click
     if (ENABLE_BACKGROUND_CLICK) {
       setBackgroundClick(null);
@@ -463,6 +471,7 @@ export function ExpandableCardDemo() {
         color,
         title: elementTexts.title,
         description: elementTexts.description,
+        image: elementTexts.image,
       });
     } else {
       console.warn("svgContainerRef.current is null");
@@ -501,13 +510,15 @@ export function ExpandableCardDemo() {
     };
 
     const hasOpenPopups =
-      clickedElement || (ENABLE_BACKGROUND_CLICK && backgroundClick);
+      clickedElement ||
+      (ENABLE_BACKGROUND_CLICK && backgroundClick) ||
+      (ENABLE_INFO_BUTTON && showInfoPopup);
     if (hasOpenPopups) {
       document.addEventListener("mousedown", handleClickOutside);
       return () =>
         document.removeEventListener("mousedown", handleClickOutside);
     }
-  }, [clickedElement, backgroundClick]);
+  }, [clickedElement, backgroundClick, showInfoPopup]);
 
   return (
     <div className="flex h-screen bg-white overflow-hidden">
@@ -566,8 +577,8 @@ export function ExpandableCardDemo() {
       {/* Main Content Area */}
       <div className="flex-1 overflow-y-auto bg-white">
         <div className="h-full flex items-center justify-center p-8">
-          <p className="text-neutral-400">
-            Click a card from the left to view details
+          <p className="text-neutral-800 text-2xl font-medium">
+            Klikk på et kort i listen til venstre for å se detaljer om planene.
           </p>
         </div>
       </div>
@@ -619,12 +630,30 @@ export function ExpandableCardDemo() {
                 >
                   {active.title}
                 </motion.h3>
-                <button
-                  onClick={() => setShowInfoPopup(true)}
-                  className="px-4 py-2 text-sm rounded-full font-semibold bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-colors"
-                >
-                  Info
-                </button>
+                <div className="flex items-center gap-3">
+                  {ENABLE_INFO_BUTTON && (
+                    <button
+                      onClick={() => setShowInfoPopup(true)}
+                      className="px-4 py-2 text-sm rounded-full font-semibold bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-colors"
+                    >
+                      Info
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setActive(null)}
+                    className="p-2 text-neutral-400 hover:text-neutral-600 transition-colors rounded-full hover:bg-neutral-100"
+                    aria-label="Close"
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
+              </div>
+
+              {/* Instruction text */}
+              <div className="px-6 py-3 border-b border-neutral-200 bg-neutral-50">
+                <p className="text-neutral-600 text-sm">
+                  Trykk på de ulike rommene for å lese om planene
+                </p>
               </div>
 
               {/* Image container */}
@@ -658,7 +687,9 @@ export function ExpandableCardDemo() {
                       initial={{ opacity: 0, scale: 0.8, y: 10 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                      className="absolute border-2 rounded-lg shadow-xl p-4 max-w-xs z-50 pointer-events-auto"
+                      className={`absolute border-2 rounded-lg shadow-xl p-4 z-50 pointer-events-auto ${
+                        clickedElement.image ? "max-w-sm" : "max-w-xs"
+                      }`}
                       style={{
                         left: `${clickedElement.position.x}px`,
                         top: `${clickedElement.position.y}px`,
@@ -674,6 +705,14 @@ export function ExpandableCardDemo() {
                       >
                         ×
                       </button>
+                      {clickedElement.image && (
+                        <img
+                          src={clickedElement.image}
+                          alt={clickedElement.title}
+                          className="w-full h-32 object-cover rounded-md mb-3"
+                          loading="lazy"
+                        />
+                      )}
                       <h4 className="font-bold text-neutral-700 mb-2 pr-6">
                         {clickedElement.title}
                       </h4>
@@ -721,52 +760,54 @@ export function ExpandableCardDemo() {
               </motion.div>
 
               {/* Info popup */}
-              <AnimatePresence>
-                {showInfoPopup && (
-                  <>
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="fixed inset-0 bg-black/50 z-[200]"
-                      onClick={() => setShowInfoPopup(false)}
-                    />
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[80vh] bg-white rounded-lg shadow-2xl z-[201] overflow-hidden flex flex-col"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="flex items-center justify-between p-6 border-b border-neutral-200">
-                        <motion.p
-                          layoutId={`description-${active.description}-${id}`}
-                          className="text-neutral-600 text-lg font-semibold"
-                        >
-                          {active.description}
-                        </motion.p>
-                        <button
-                          onClick={() => setShowInfoPopup(false)}
-                          className="text-neutral-400 hover:text-neutral-600 text-2xl leading-none w-8 h-8 flex items-center justify-center"
-                        >
-                          ×
-                        </button>
-                      </div>
+              {ENABLE_INFO_BUTTON && (
+                <AnimatePresence>
+                  {showInfoPopup && (
+                    <>
                       <motion.div
-                        layout
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="text-neutral-600 text-sm md:text-base flex-1 overflow-y-auto p-6"
+                        className="fixed inset-0 bg-black/50 z-[200]"
+                        onClick={() => setShowInfoPopup(false)}
+                      />
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[80vh] bg-white rounded-lg shadow-2xl z-[201] overflow-hidden flex flex-col"
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        {typeof active.content === "function"
-                          ? active.content()
-                          : active.content}
+                        <div className="flex items-center justify-between p-6 border-b border-neutral-200">
+                          <motion.p
+                            layoutId={`description-${active.description}-${id}`}
+                            className="text-neutral-600 text-lg font-semibold"
+                          >
+                            {active.description}
+                          </motion.p>
+                          <button
+                            onClick={() => setShowInfoPopup(false)}
+                            className="text-neutral-400 hover:text-neutral-600 text-2xl leading-none w-8 h-8 flex items-center justify-center"
+                          >
+                            ×
+                          </button>
+                        </div>
+                        <motion.div
+                          layout
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="text-neutral-600 text-sm md:text-base flex-1 overflow-y-auto p-6"
+                        >
+                          {typeof active.content === "function"
+                            ? active.content()
+                            : active.content}
+                        </motion.div>
                       </motion.div>
-                    </motion.div>
-                  </>
-                )}
-              </AnimatePresence>
+                    </>
+                  )}
+                </AnimatePresence>
+              )}
             </motion.div>
           </div>
         ) : null}

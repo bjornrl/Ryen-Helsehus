@@ -12,17 +12,22 @@
 // ============================================================================
 
 // Default text for elements that don't have specific text defined
-export const defaultElementPopupTexts = {
+export const defaultElementPopupTexts: {
+  title: string;
+  description: string;
+  image?: string;
+} = {
   title: "Element Info",
   description: "You clicked on a .cls element. Add your custom content here!",
 };
 
 // Mapping of file names and class names to their specific text content
-// Structure: fileName -> className -> { title, description }
+// Structure: fileName -> className -> { title, description, image? }
 // This allows the same class name (e.g., "cls-2") to have different text in different SVG files
+// The image field is optional - if provided, it will be displayed in the popup
 export const elementPopupTextsMap: Record<
   string,
-  Record<string, { title: string; description: string }>
+  Record<string, { title: string; description: string; image?: string }>
 > = {
   // Plan 01 Alt (Første etasje)
   "plan_01_alt.svg": {
@@ -84,7 +89,8 @@ export const elementPopupTextsMap: Record<
       //Møtesenter/Samhandling
       title: "Møtesenter/Samhandling",
       description:
-        "Vi ser for oss at det kan være rom dedikert til samarbeid eller møter i 1.etg. Utformingen og den spesifikke funksjonen til disse gjenstår å bestemme. ",
+        "Vi ser for oss at det kan være rom dedikert til samarbeid eller møter i 1.etg. Utformingen og den spesifikke funksjonen til disse gjenstår å bestemme. ",
+      image: "/images/Mittrommet Bakgrunn.png",
     },
   },
   // Plan 02 Alt (Andre etasje)

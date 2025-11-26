@@ -2,28 +2,58 @@ import { ClassicStickyScroll } from "./ui/classic-sticky-scroll";
 
 const storyContent = [
   {
-    title: "First Section",
-    description:
-      "This is the first section of content. As you scroll down, you'll see the image change behind the text. The image transitions smoothly as each section comes into view.",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
+    title: "Første etasje",
+    description: "Visualisering av innsiden av første etasje.",
+    image: "/images/plan_01_møblert.jpg",
   },
   {
-    title: "Second Section",
+    title: "Illustrasjon Interiør",
     description:
-      "Here's the second section. Notice how the background image has changed to match this content. The sticky scroll effect creates an engaging visual experience as you navigate through the content.",
-    image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&h=1080&fit=crop",
+      "Vi ser for oss at verkstedet blir et sted der man bare oppholder seg når man skal jobbe med verktøyene som er der, mens alle andre oppgaver utføres enten i arbeidsrommene eller det åpne landskapet.",
+    image: "/images/arbeidsplass.png",
   },
   {
-    title: "Third Section",
+    title: "Gang",
     description:
-      "The third section brings another beautiful image into view. Each image is carefully selected to complement the text content, creating a cohesive storytelling experience.",
-    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
+      "Vi ønsker å lage en dedikert gåsone for pasienter som har behov for dette. Denne kan også plasseres i gangen på motsatt side av bygget, i tilknytning til trappen, men blir den ikke like skjermet fra de andre prøverommene. ",
+    image: "/images/gang.png",
   },
   {
-    title: "Fourth Section",
+    title: "Render av utsiden av bygget",
+    description: "Slik vi ser for oss at bygget vil se ut fra busstasjonen.",
+    image: "/images/hvit_render_1.png",
+  },
+
+  {
+    title: "Utsiden av bygget.",
     description:
-      "Finally, the fourth section completes the journey. The sticky scroll component provides a smooth, professional way to showcase multiple images alongside your content.",
-    image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=1920&h=1080&fit=crop",
+      "Bygget må ha lett tilgang for både pasienter, ambulanser og varer.",
+    image: "/images/hvit_render_2.png",
+  },
+  {
+    title: "Render av utsiden av bygget",
+    description: "Slik vi ser for oss at bygget vil se ut fra busstasjonen.",
+    image: "/images/utenfor-farget.jpg",
+  },
+  {
+    title: "Kontorer",
+    description: "Illustrasjon av kontorer sett utenifra.",
+    image: "/images/kontorer.png",
+  },
+  {
+    title: "Illustrasjon av første etasje.",
+    description: "Innsyn i umøblert førsteetasje med sollys.",
+    image: "/images/plan_01.png",
+  },
+  {
+    title: "Verksted",
+    description: "Åpent landskap med 22 plasser for teknikere og ingeniører.",
+    image: "/images/verksted.png",
+  },
+  {
+    title: "Perpektivrender av bygget.",
+    description: "Render av bygget sett fra undergangen.",
+    image: "/images/volum.png",
   },
 ];
 
@@ -34,4 +64,3 @@ export default function AboutPage() {
     </div>
   );
 }
-

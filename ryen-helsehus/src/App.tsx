@@ -55,7 +55,7 @@ function App() {
                   : "text-neutral-500 hover:text-neutral-700"
               }`}
             >
-              About
+              Inspiration
             </button>
           </nav>
         </div>
@@ -66,7 +66,9 @@ function App() {
           page === "about" ? "overflow-auto" : "overflow-hidden"
         }`}
       >
-        {page === "fortelling" && <HomepagePage />}
+        {page === "fortelling" && (
+          <HomepagePage onNavigateToOverview={() => setPage("medvirkning")} />
+        )}
         {page === "medvirkning" && <OverviewPage />}
         {page === "about" && <AboutPage />}
       </main>
