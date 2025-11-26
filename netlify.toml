@@ -1,6 +1,6 @@
 [build]
   base = "ryen-helsehus"
-  publish = "ryen-helsehus/dist"
+  publish = "dist"
   command = "npm install && npm run build"
 
 [[redirects]]
