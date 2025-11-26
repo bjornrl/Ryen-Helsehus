@@ -510,9 +510,9 @@ export function ExpandableCardDemo() {
   }, [clickedElement, backgroundClick]);
 
   return (
-    <div className="flex h-screen bg-white dark:bg-neutral-950 overflow-hidden">
+    <div className="flex h-screen bg-white overflow-hidden">
       {/* Left Sidebar - Cards List */}
-      <div className="w-80 border-r border-neutral-200 dark:border-neutral-800 overflow-y-auto dark:bg-neutral-900">
+      <div className="w-80 border-r border-neutral-200 overflow-y-auto bg-neutral-50">
         <ul className="w-full gap-2 p-4">
           {cards.map((card) => {
             const isActive =
@@ -526,8 +526,8 @@ export function ExpandableCardDemo() {
                 onClick={() => setActive(card)}
                 className={`p-4 flex flex-col md:flex-row justify-between items-center rounded-xl cursor-pointer mb-2 transition-colors ${
                   isActive
-                    ? "bg-green-50 dark:bg-green-900/20 border-2 border-green-500"
-                    : "hover:bg-neutral-50 dark:hover:bg-neutral-800"
+                    ? "bg-green-50 border-2 border-green-500"
+                    : "hover:bg-neutral-50"
                 }`}
               >
                 <div className="flex gap-4 flex-col md:flex-row w-full">
@@ -537,7 +537,7 @@ export function ExpandableCardDemo() {
                       height={100}
                       src={card.thumbnail || card.src}
                       alt={card.title}
-                      className="h-40 w-40 md:h-14 md:w-14 rounded-lg object-cover object-top transition-all duration-200 hover:brightness-75 dark:hover:brightness-50"
+                      className="h-40 w-40 md:h-14 md:w-14 rounded-lg object-cover object-top transition-all duration-200 hover:brightness-75"
                       loading="lazy"
                       decoding="async"
                     />
@@ -545,13 +545,13 @@ export function ExpandableCardDemo() {
                   <div className="flex-1">
                     <motion.h3
                       layoutId={`title-${card.title}-${id}`}
-                      className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left text-sm"
+                      className="font-medium text-neutral-800 text-center md:text-left text-sm"
                     >
                       {card.title}
                     </motion.h3>
                     <motion.p
                       layoutId={`description-${card.description}-${id}`}
-                      className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-xs"
+                      className="text-neutral-600 text-center md:text-left text-xs"
                     >
                       {card.description}
                     </motion.p>
@@ -564,9 +564,9 @@ export function ExpandableCardDemo() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto dark:bg-neutral-950">
+      <div className="flex-1 overflow-y-auto bg-white">
         <div className="h-full flex items-center justify-center p-8">
-          <p className="text-neutral-400 dark:text-neutral-600">
+          <p className="text-neutral-400">
             Click a card from the left to view details
           </p>
         </div>
@@ -609,19 +609,19 @@ export function ExpandableCardDemo() {
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[80%] h-screen bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden flex flex-col"
+              className="w-full max-w-[80%] h-screen bg-white sm:rounded-3xl overflow-hidden flex flex-col"
             >
               {/* Header with title and info button */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
                 <motion.h3
                   layoutId={`title-${active.title}-${id}`}
-                  className="font-bold text-neutral-700 dark:text-neutral-200 text-2xl"
+                  className="font-bold text-neutral-700 text-2xl"
                 >
                   {active.title}
                 </motion.h3>
                 <button
                   onClick={() => setShowInfoPopup(true)}
-                  className="px-4 py-2 text-sm rounded-full font-semibold bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-200 transition-colors"
+                  className="px-4 py-2 text-sm rounded-full font-semibold bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-colors"
                 >
                   Info
                 </button>
@@ -670,14 +670,14 @@ export function ExpandableCardDemo() {
                     >
                       <button
                         onClick={() => setClickedElement(null)}
-                        className="absolute top-2 right-2 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-xl leading-none w-5 h-5 flex items-center justify-center"
+                        className="absolute top-2 right-2 text-neutral-400 hover:text-neutral-600 text-xl leading-none w-5 h-5 flex items-center justify-center"
                       >
                         ×
                       </button>
-                      <h4 className="font-bold text-neutral-700 dark:text-neutral-200 mb-2 pr-6">
+                      <h4 className="font-bold text-neutral-700 mb-2 pr-6">
                         {clickedElement.title}
                       </h4>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                      <p className="text-sm text-neutral-600">
                         {clickedElement.description}
                       </p>
                     </motion.div>
@@ -704,14 +704,14 @@ export function ExpandableCardDemo() {
                       >
                         <button
                           onClick={() => setBackgroundClick(null)}
-                          className="absolute top-2 right-2 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-xl leading-none w-5 h-5 flex items-center justify-center"
+                          className="absolute top-2 right-2 text-neutral-400 hover:text-neutral-600 text-xl leading-none w-5 h-5 flex items-center justify-center"
                         >
                           ×
                         </button>
-                        <h4 className="font-bold text-neutral-700 dark:text-neutral-200 mb-2 pr-6">
+                        <h4 className="font-bold text-neutral-700 mb-2 pr-6">
                           {backgroundPopupTexts.title}
                         </h4>
-                        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                        <p className="text-sm text-neutral-600">
                           {backgroundPopupTexts.description}
                         </p>
                       </motion.div>
@@ -735,19 +735,19 @@ export function ExpandableCardDemo() {
                       initial={{ opacity: 0, scale: 0.95, y: 20 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[80vh] bg-white dark:bg-neutral-900 rounded-lg shadow-2xl z-[201] overflow-hidden flex flex-col"
+                      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[80vh] bg-white rounded-lg shadow-2xl z-[201] overflow-hidden flex flex-col"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800">
+                      <div className="flex items-center justify-between p-6 border-b border-neutral-200">
                         <motion.p
                           layoutId={`description-${active.description}-${id}`}
-                          className="text-neutral-600 dark:text-neutral-400 text-lg font-semibold"
+                          className="text-neutral-600 text-lg font-semibold"
                         >
                           {active.description}
                         </motion.p>
                         <button
                           onClick={() => setShowInfoPopup(false)}
-                          className="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-2xl leading-none w-8 h-8 flex items-center justify-center"
+                          className="text-neutral-400 hover:text-neutral-600 text-2xl leading-none w-8 h-8 flex items-center justify-center"
                         >
                           ×
                         </button>
@@ -757,7 +757,7 @@ export function ExpandableCardDemo() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="text-neutral-600 text-sm md:text-base flex-1 overflow-y-auto p-6 dark:text-neutral-400"
+                        className="text-neutral-600 text-sm md:text-base flex-1 overflow-y-auto p-6"
                       >
                         {typeof active.content === "function"
                           ? active.content()
