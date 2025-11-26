@@ -859,13 +859,13 @@ const cards: Array<{
   content: () => React.ReactNode;
 }> = [
   {
-    description: firstFloorCard.description,
-    title: firstFloorCard.title,
-    src: "/plan_01_alt.svg",
-    thumbnail: "/plan_01_alt.svg", // Smaller thumbnail for sidebar
+    description: thirdFloorCard.description,
+    title: thirdFloorCard.title,
+    src: "/plan_03_alt.svg",
+    thumbnail: "/plan_03_alt.svg", // Smaller thumbnail for sidebar
     ctaText: "Se mer",
     ctaLink: "#",
-    content: firstFloorCard.content,
+    content: thirdFloorCard.content,
   },
   {
     description: secondFloorCard.description,
@@ -877,12 +877,12 @@ const cards: Array<{
     content: secondFloorCard.content,
   },
   {
-    description: thirdFloorCard.description,
-    title: thirdFloorCard.title,
-    src: "/plan_03_alt.svg",
-    thumbnail: "/plan_03_alt.svg", // Smaller thumbnail for sidebar
+    description: firstFloorCard.description,
+    title: firstFloorCard.title,
+    src: "/plan_01_alt.svg",
+    thumbnail: "/plan_01_alt.svg", // Smaller thumbnail for sidebar
     ctaText: "Se mer",
     ctaLink: "#",
-    content: thirdFloorCard.content,
+    content: firstFloorCard.content,
   },
 ];

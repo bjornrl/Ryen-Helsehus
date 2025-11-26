@@ -60,6 +60,7 @@ export const elementPopupTextsMap: Record<
       title: "Felles inngang",
       description:
         "Vi ser for oss et felles inngangsparti for hele bygget, med en husvert og innsjekk av besøkende. Her vil de besøkende kunne bli vist rett til etasjen/tjenesten de skal til, eller få muligheten til å vente i Kafeen. ",
+      image: "/images/plan_01_møblert.jpg",
     },
     "cls-1": {
       // Kantine (Kjøkken/Oppvask)
@@ -90,7 +91,6 @@ export const elementPopupTextsMap: Record<
       title: "Møtesenter/Samhandling",
       description:
         "Vi ser for oss at det kan være rom dedikert til samarbeid eller møter i 1.etg. Utformingen og den spesifikke funksjonen til disse gjenstår å bestemme. ",
-      image: "/images/Mittrommet Bakgrunn.png",
     },
   },
   // Plan 02 Alt (Andre etasje)
@@ -100,6 +100,7 @@ export const elementPopupTextsMap: Record<
       title: "Gåsone",
       description:
         "Vi ønsker å lage en dedikert gåsone for pasienter som har behov for dette. Denne kan også plasseres i gangen på motsatt side av bygget, i tilknytning til trappen, men blir den ikke like skjermet fra de andre prøverommene. ",
+      image: "/images/gang.png",
     },
     "cls-21": {
       // vareheis
@@ -124,6 +125,8 @@ export const elementPopupTextsMap: Record<
       title: "Verksted",
       description:
         "Vi ønsker at så mye av verkstedet som er relevant for pasientene plasseres i denne etasjen. Eksempelvis kort vei til sliperom for fotsenger vil være hensiktsmessig.",
+
+      image: "/images/arbeidsplass.png",
     },
   },
   // Plan 03 Alt (Tredje etasje)
@@ -151,6 +154,7 @@ export const elementPopupTextsMap: Record<
       title: "Verksted",
       description:
         "Vi ser for oss at verkstedet blir et sted der man bare oppholder seg når man skal jobbe med verktøyene som er der, mens alle andre oppgaver utføres enten i arbeidsrommene eller det åpne landskapet.",
+      image: "/images/verksted.png",
     },
     "cls-22": {
       // ansatt-kjøkken
