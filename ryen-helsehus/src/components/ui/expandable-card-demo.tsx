@@ -795,19 +795,22 @@ export function ExpandableCardDemo() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto bg-white">
-        <div className="h-full flex justify-start flex-col items-start p-8">
-          <p className="text-neutral-800 text-2xl font-medium">
-            Klikk på et kort i listen til venstre for å se detaljer om planene.
-          </p>
-          <SectionDiagramSVG
-            onFloorClick={(floorIndex) => {
-              // Map floor index to card: 0 = third floor, 1 = second floor, 2 = first floor
-              setActive(cards[floorIndex]);
-            }}
-          />
+      {!active && (
+        <div className="flex-1 overflow-y-auto bg-white">
+          <div className="h-full flex justify-start flex-col items-start p-8">
+            <p className="text-neutral-800 text-2xl font-medium">
+              Klikk på et kort i listen til venstre for å se detaljer om
+              planene.
+            </p>
+            <SectionDiagramSVG
+              onFloorClick={(floorIndex) => {
+                // Map floor index to card: 0 = third floor, 1 = second floor, 2 = first floor
+                setActive(cards[floorIndex]);
+              }}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Expanded Card Modal - Centered Overlay */}
       <AnimatePresence>
