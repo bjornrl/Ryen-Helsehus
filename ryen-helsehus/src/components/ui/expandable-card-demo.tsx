@@ -687,8 +687,8 @@ export function ExpandableCardDemo() {
                       initial={{ opacity: 0, scale: 0.8, y: 10 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                      className={`absolute border-2 rounded-lg shadow-xl p-4 z-50 pointer-events-auto ${
-                        clickedElement.image ? "max-w-sm" : "max-w-xs"
+                      className={`absolute border-2 rounded-lg shadow-xl p-5 z-50 pointer-events-auto ${
+                        clickedElement.image ? "max-w-lg" : "max-w-md"
                       }`}
                       style={{
                         left: `${clickedElement.position.x}px`,
@@ -701,22 +701,41 @@ export function ExpandableCardDemo() {
                     >
                       <button
                         onClick={() => setClickedElement(null)}
-                        className="absolute top-2 right-2 text-neutral-400 hover:text-neutral-600 text-xl leading-none w-5 h-5 flex items-center justify-center"
+                        className="absolute top-2 right-2 text-neutral-500 hover:text-red-600 text-xl leading-none w-7 h-7 flex items-center justify-center rounded-full p-1 shadow-xl border border-white/30 transition-all duration-200 backdrop-blur-md bg-white/30 hover:bg-white/50"
+                        style={{
+                          boxShadow:
+                            "0 4px 16px 0 rgba(80,130,190,0.10), 0 1.5px 6px 0 rgba(120,180,250,0.12) inset",
+                          backdropFilter: "blur(12px)",
+                        }}
+                        aria-label="Lukk"
                       >
-                        ×
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 drop-shadow-glass"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
                       </button>
                       {clickedElement.image && (
                         <img
                           src={clickedElement.image}
                           alt={clickedElement.title}
-                          className="w-full h-32 object-cover rounded-md mb-3"
+                          className="w-full h-40 object-cover rounded-md mb-3"
                           loading="lazy"
                         />
                       )}
-                      <h4 className="font-bold text-neutral-700 mb-2 pr-6">
+                      <h4 className="font-bold text-neutral-700 mb-2 pr-6 text-base">
                         {clickedElement.title}
                       </h4>
-                      <p className="text-sm text-neutral-600">
+                      <p className="text-base text-neutral-600">
                         {clickedElement.description}
                       </p>
                     </motion.div>
@@ -743,7 +762,7 @@ export function ExpandableCardDemo() {
                       >
                         <button
                           onClick={() => setBackgroundClick(null)}
-                          className="absolute top-2 right-2 text-neutral-400 hover:text-neutral-600 text-xl leading-none w-5 h-5 flex items-center justify-center"
+                          className="absolute top-2 right-2 text-neutral-400 hover:text-red-600 text-xl leading-none w-5 h-5 flex items-center justify-center"
                         >
                           ×
                         </button>
@@ -787,7 +806,7 @@ export function ExpandableCardDemo() {
                           </motion.p>
                           <button
                             onClick={() => setShowInfoPopup(false)}
-                            className="text-neutral-400 hover:text-neutral-600 text-2xl leading-none w-8 h-8 flex items-center justify-center"
+                            className="text-red-500 hover:text-neutral-600 text-2xl leading-none w-8 h-8 flex items-center justify-center"
                           >
                             ×
                           </button>
