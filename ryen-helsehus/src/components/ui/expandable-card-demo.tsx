@@ -268,6 +268,49 @@ function InteractiveSVG({
   );
 }
 
+// Helper function to calculate popup transform based on viewport position
+const calculatePopupTransform = (
+  clientY: number,
+  hasImage: boolean
+): string => {
+  const viewportHeight = window.innerHeight;
+  const middleY = viewportHeight / 2;
+
+  // Estimate popup height (varies based on content, estimate ~300px with image, ~200px without)
+  const popupHeight = hasImage ? 300 : 200;
+  const spacing = 10; // Space between mouse and popup
+
+  // Check if mouse is below middle of screen
+  const isBelowMiddle = clientY > middleY;
+
+  // Calculate if popup would go out of bounds vertically
+  const spaceAbove = clientY;
+  const spaceBelow = viewportHeight - clientY;
+
+  // Determine vertical position
+  let verticalTransform: string;
+  if (isBelowMiddle) {
+    // Mouse is below middle - show popup above
+    if (spaceAbove >= popupHeight + spacing) {
+      verticalTransform = `calc(-100% - ${spacing}px)`;
+    } else {
+      // Not enough space above, show below instead
+      verticalTransform = `${spacing}px`;
+    }
+  } else {
+    // Mouse is above middle - show popup below
+    if (spaceBelow >= popupHeight + spacing) {
+      verticalTransform = `${spacing}px`;
+    } else {
+      // Not enough space below, show above instead
+      verticalTransform = `calc(-100% - ${spacing}px)`;
+    }
+  }
+
+  // Horizontal centering (always center on mouse)
+  return `translate(-50%, ${verticalTransform})`;
+};
+
 export function ExpandableCardDemo() {
   const [active, setActive] = useState<(typeof cards)[number] | boolean | null>(
     null
@@ -275,6 +318,7 @@ export function ExpandableCardDemo() {
   const [clickedElement, setClickedElement] = useState<{
     element: SVGElement;
     position: { x: number; y: number };
+    clientPosition: { x: number; y: number }; // Viewport coordinates for positioning logic
     color: string;
     title: string;
     description: string;
@@ -437,6 +481,10 @@ export function ExpandableCardDemo() {
         x: event.clientX - containerRect.left,
         y: event.clientY - containerRect.top,
       };
+      const clientPosition = {
+        x: event.clientX,
+        y: event.clientY,
+      };
       const color = getElementColor(element);
 
       // Extract file name from path (e.g., "/plan_01.svg" -> "plan_01.svg")
@@ -468,6 +516,7 @@ export function ExpandableCardDemo() {
       setClickedElement({
         element,
         position,
+        clientPosition,
         color,
         title: elementTexts.title,
         description: elementTexts.description,
@@ -693,7 +742,10 @@ export function ExpandableCardDemo() {
                       style={{
                         left: `${clickedElement.position.x}px`,
                         top: `${clickedElement.position.y}px`,
-                        transform: "translate(-50%, calc(-100% - 10px))",
+                        transform: calculatePopupTransform(
+                          clickedElement.clientPosition.y,
+                          !!clickedElement.image
+                        ),
                         borderColor: clickedElement.color,
                         backgroundColor: colorToRgba(clickedElement.color, 0.7),
                       }}

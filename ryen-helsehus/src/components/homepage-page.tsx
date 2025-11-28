@@ -2,9 +2,7 @@ interface HomepagePageProps {
   onNavigateToOverview: () => void;
 }
 
-export default function HomepagePage({
-  onNavigateToOverview,
-}: HomepagePageProps) {
+export default function HomepagePage({}: HomepagePageProps) {
   return (
     <div className="h-full overflow-y-auto">
       {/* Full-screen image section with headline overlay */}
