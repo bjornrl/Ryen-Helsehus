@@ -250,3 +250,16 @@ export const thirdFloorCard = {
     </div>
   ),
 };
+
+// Card 4: Underetasje (U1)
+export const underetasjeCard = {
+  title: "Underetasje",
+  description: "U1",
+  content: () => (
+    <div>
+      <p>
+        Underetasje (U1) plan.
+      </p>
+    </div>
+  ),
+};

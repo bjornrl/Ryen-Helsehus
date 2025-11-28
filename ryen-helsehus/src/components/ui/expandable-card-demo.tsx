@@ -10,6 +10,7 @@ import {
   firstFloorCard,
   secondFloorCard,
   thirdFloorCard,
+  underetasjeCard,
 } from "./medvirkning-texts";
 
 // Feature flag: Enable/disable background click (white space) functionality
@@ -49,6 +50,176 @@ const clickableClassesByFile: Record<string, string[]> = {
     "cls-22", // ansatt-kjøkken
   ],
 };
+
+// Section Diagram SVG Component - Simple display for snitttegning.svg
+function SectionDiagramSVG({
+  onFloorClick,
+}: {
+  onFloorClick: (floorIndex: number) => void;
+}) {
+  const svgRef = useRef<HTMLDivElement>(null);
+  const [svgContent, setSvgContent] = useState<string>("");
+
+  useEffect(() => {
+    fetch("/snitttegning.svg")
+      .then((res) => res.text())
+      .then((text) => {
+        const parser = new DOMParser();
+        const svgDoc = parser.parseFromString(text, "image/svg+xml");
+        const svgElement = svgDoc.querySelector("svg");
+
+        if (svgElement) {
+          if (!svgElement.hasAttribute("preserveAspectRatio")) {
+            svgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
+          }
+          const currentStyle = svgElement.getAttribute("style") || "";
+          svgElement.setAttribute(
+            "style",
+            `${currentStyle} height: 100%; width: auto; display: block;`.trim()
+          );
+
+          const serializer = new XMLSerializer();
+          setSvgContent(serializer.serializeToString(svgElement));
+        }
+      })
+      .catch((err) => console.error("Error loading snitttegning.svg:", err));
+  }, []);
+
+  // Attach click handlers after SVG is rendered
+  useEffect(() => {
+    if (!svgRef.current || !svgContent) return;
+
+    const svgElement = svgRef.current.querySelector("svg");
+    if (!svgElement) return;
+
+    // Map of class names to floor indices
+    const classToFloorMap: Record<string, number> = {
+      "cls-19": 0, // tredje etasje (third floor)
+      "cls-20": 1, // andre etasje (second floor)
+      "cls-16": 2, // første etasje (first floor)
+      "cls-17": 3, // underetasje (U1) - not yet implemented
+    };
+
+    const handleMouseEnter = (e: Event) => {
+      const element = e.target as SVGElement;
+      const classList = Array.from(element.classList);
+      const clickableClass = classList.find((cls) =>
+        classToFloorMap.hasOwnProperty(cls)
+      );
+
+      if (clickableClass) {
+        const currentStyle = element.getAttribute("style") || "";
+        element.setAttribute(
+          "style",
+          `${currentStyle} cursor: pointer; filter: brightness(0.8);`.trim()
+        );
+      }
+    };
+
+    const handleMouseLeave = (e: Event) => {
+      const element = e.target as SVGElement;
+      const classList = Array.from(element.classList);
+      const clickableClass = classList.find((cls) =>
+        classToFloorMap.hasOwnProperty(cls)
+      );
+
+      if (clickableClass) {
+        const style = element.getAttribute("style") || "";
+        element.setAttribute(
+          "style",
+          style
+            .replace(/filter:\s*[^;]+;?/g, "")
+            .replace(/cursor:\s*[^;]+;?/g, "")
+            .trim()
+        );
+      }
+    };
+
+    const handleClick = (e: Event) => {
+      const mouseEvent = e as MouseEvent;
+      mouseEvent.stopPropagation();
+      mouseEvent.preventDefault();
+      const element = e.target as SVGElement;
+
+      // Don't handle clicks on the SVG root
+      if (element === svgElement) return;
+
+      const classList = Array.from(element.classList);
+      const clickableClass = classList.find((cls) =>
+        classToFloorMap.hasOwnProperty(cls)
+      );
+
+      if (clickableClass) {
+        const floorIndex = classToFloorMap[clickableClass];
+        console.log("Section diagram clicked:", { clickableClass, floorIndex }); // Debug
+
+        // cls-17 (underetasje) is not yet implemented, so we'll skip it for now
+        if (floorIndex === 3) {
+          console.log("Underetasje (U1) not yet implemented");
+          return;
+        }
+
+        onFloorClick(floorIndex);
+      }
+    };
+
+    // Find all elements with the clickable classes, but exclude text elements
+    const clickableClasses = Object.keys(classToFloorMap);
+    const clickableElements: SVGElement[] = [];
+
+    // Shape elements that should be clickable (exclude text, tspan, etc.)
+    const shapeElementTypes = [
+      "path",
+      "rect",
+      "circle",
+      "ellipse",
+      "polygon",
+      "polyline",
+      "line",
+      "g",
+    ];
+
+    clickableClasses.forEach((className) => {
+      const elements = Array.from(svgElement.querySelectorAll(`.${className}`));
+      // Filter to only include shape elements, not text elements
+      const shapeElements = elements.filter((el) => {
+        const tagName = el.tagName.toLowerCase();
+        return shapeElementTypes.includes(tagName);
+      });
+      clickableElements.push(...(shapeElements as SVGElement[]));
+    });
+
+    clickableElements.forEach((element) => {
+      element.addEventListener("mouseenter", handleMouseEnter);
+      element.addEventListener("mouseleave", handleMouseLeave);
+      element.addEventListener("click", handleClick);
+    });
+
+    return () => {
+      clickableElements.forEach((element) => {
+        element.removeEventListener("mouseenter", handleMouseEnter);
+        element.removeEventListener("mouseleave", handleMouseLeave);
+        element.removeEventListener("click", handleClick);
+      });
+    };
+  }, [svgContent, onFloorClick]);
+
+  if (!svgContent) {
+    return (
+      <div className="h-[90%] w-auto flex items-center justify-center text-neutral-400">
+        Loading snitttegning...
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={svgRef}
+      className="h-[85%] w-auto flex items-center justify-start [&>svg]:h-full [&>svg]:w-auto"
+      dangerouslySetInnerHTML={{ __html: svgContent }}
+    />
+  );
+}
 
 // Interactive SVG Component
 function InteractiveSVG({
@@ -461,7 +632,7 @@ export function ExpandableCardDemo() {
     }
 
     // Default to green if no color found
-    return "#22c55e"; // green-500
+    return "bg-zink-200"; // green-500
   };
 
   const handleSVGElementClick = (
@@ -625,10 +796,16 @@ export function ExpandableCardDemo() {
 
       {/* Main Content Area */}
       <div className="flex-1 overflow-y-auto bg-white">
-        <div className="h-full flex items-center justify-center p-8">
+        <div className="h-full flex justify-start flex-col items-start p-8">
           <p className="text-neutral-800 text-2xl font-medium">
             Klikk på et kort i listen til venstre for å se detaljer om planene.
           </p>
+          <SectionDiagramSVG
+            onFloorClick={(floorIndex) => {
+              // Map floor index to card: 0 = third floor, 1 = second floor, 2 = first floor
+              setActive(cards[floorIndex]);
+            }}
+          />
         </div>
       </div>
 
@@ -705,130 +882,288 @@ export function ExpandableCardDemo() {
                 </p>
               </div>
 
-              {/* Image container */}
-              <motion.div
-                layoutId={`image-${active.title}-${id}`}
-                className="flex-1 relative overflow-hidden"
-                ref={svgContainerRef}
-              >
-                {active.src.endsWith(".svg") ? (
-                  <InteractiveSVG
-                    src={active.src}
-                    onElementClick={handleSVGElementClick}
-                    onBackgroundClick={handleSVGBackgroundClick}
-                  />
-                ) : (
-                  <img
-                    width={320}
-                    height={640}
-                    src={active.src}
-                    alt={active.title}
-                    className="h-full w-auto object-contain"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                )}
-
-                {/* Textbox overlay for clicked element */}
-                <AnimatePresence>
-                  {clickedElement && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8, y: 10 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                      className={`absolute border-2 rounded-lg shadow-xl p-5 z-50 pointer-events-auto ${
-                        clickedElement.image ? "max-w-lg" : "max-w-md"
-                      }`}
-                      style={{
-                        left: `${clickedElement.position.x}px`,
-                        top: `${clickedElement.position.y}px`,
-                        transform: calculatePopupTransform(
-                          clickedElement.clientPosition.y,
-                          !!clickedElement.image
-                        ),
-                        borderColor: clickedElement.color,
-                        backgroundColor: colorToRgba(clickedElement.color, 0.7),
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <button
-                        onClick={() => setClickedElement(null)}
-                        className="absolute top-2 right-2 text-neutral-500 hover:text-red-600 text-xl leading-none w-7 h-7 flex items-center justify-center rounded-full p-1 shadow-xl border border-white/30 transition-all duration-200 backdrop-blur-md bg-white/30 hover:bg-white/50"
-                        style={{
-                          boxShadow:
-                            "0 4px 16px 0 rgba(80,130,190,0.10), 0 1.5px 6px 0 rgba(120,180,250,0.12) inset",
-                          backdropFilter: "blur(12px)",
-                        }}
-                        aria-label="Lukk"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 drop-shadow-glass"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2.5}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
-                      {clickedElement.image && (
-                        <img
-                          src={clickedElement.image}
-                          alt={clickedElement.title}
-                          className="w-full h-40 object-cover rounded-md mb-3"
-                          loading="lazy"
-                        />
-                      )}
-                      <h4 className="font-bold text-neutral-700 mb-2 pr-6 text-base">
-                        {clickedElement.title}
-                      </h4>
-                      <p className="text-base text-neutral-600">
-                        {clickedElement.description}
-                      </p>
-                    </motion.div>
+              {/* Main content area with image and list */}
+              <div className="flex-1 flex overflow-hidden">
+                {/* Image container */}
+                <motion.div
+                  layoutId={`image-${active.title}-${id}`}
+                  className="flex-1 relative overflow-hidden"
+                  ref={svgContainerRef}
+                >
+                  {active.src.endsWith(".svg") ? (
+                    <InteractiveSVG
+                      src={active.src}
+                      onElementClick={handleSVGElementClick}
+                      onBackgroundClick={handleSVGBackgroundClick}
+                    />
+                  ) : (
+                    <img
+                      width={320}
+                      height={640}
+                      src={active.src}
+                      alt={active.title}
+                      className="h-full w-auto object-contain"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   )}
-                </AnimatePresence>
 
-                {/* FEATURE: Background Click - Textbox overlay for background click (white space) */}
-                {ENABLE_BACKGROUND_CLICK && (
+                  {/* Textbox overlay for clicked element */}
                   <AnimatePresence>
-                    {backgroundClick && (
+                    {clickedElement && (
                       <motion.div
                         initial={{ opacity: 0, scale: 0.8, y: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                        className="absolute border-2 rounded-lg shadow-xl p-4 max-w-xs z-50 pointer-events-auto"
+                        className={`absolute border-2 rounded-lg shadow-xl p-5 z-50 pointer-events-auto ${
+                          clickedElement.image ? "max-w-lg" : "max-w-md"
+                        }`}
                         style={{
-                          left: `${backgroundClick.position.x}px`,
-                          top: `${backgroundClick.position.y}px`,
-                          transform: "translate(-50%, calc(-100% - 10px))",
-                          borderColor: "#6b7280", // neutral-500
-                          backgroundColor: colorToRgba("#6b7280", 0.7),
+                          left: `${clickedElement.position.x}px`,
+                          top: `${clickedElement.position.y}px`,
+                          transform: calculatePopupTransform(
+                            clickedElement.clientPosition.y,
+                            !!clickedElement.image
+                          ),
+                          borderColor: clickedElement.color,
+                          backgroundColor: colorToRgba(
+                            clickedElement.color,
+                            0.7
+                          ),
                         }}
                         onClick={(e) => e.stopPropagation()}
                       >
                         <button
-                          onClick={() => setBackgroundClick(null)}
-                          className="absolute top-2 right-2 text-neutral-400 hover:text-red-600 text-xl leading-none w-5 h-5 flex items-center justify-center"
+                          onClick={() => setClickedElement(null)}
+                          className="absolute top-2 right-2 text-neutral-500 hover:text-red-600 text-xl leading-none w-7 h-7 flex items-center justify-center rounded-full p-1 shadow-xl border border-white/30 transition-all duration-200 backdrop-blur-md bg-white/30 hover:bg-white/50"
+                          style={{
+                            boxShadow:
+                              "0 4px 16px 0 rgba(80,130,190,0.10), 0 1.5px 6px 0 rgba(120,180,250,0.12) inset",
+                            backdropFilter: "blur(12px)",
+                          }}
+                          aria-label="Lukk"
                         >
-                          ×
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 drop-shadow-glass"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2.5}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
                         </button>
-                        <h4 className="font-bold text-neutral-700 mb-2 pr-6">
-                          {backgroundPopupTexts.title}
+                        {clickedElement.image && (
+                          <img
+                            src={clickedElement.image}
+                            alt={clickedElement.title}
+                            className="w-full h-40 object-cover rounded-md mb-3"
+                            loading="lazy"
+                          />
+                        )}
+                        <h4 className="font-bold text-neutral-700 mb-2 pr-6 text-base">
+                          {clickedElement.title}
                         </h4>
-                        <p className="text-sm text-neutral-600">
-                          {backgroundPopupTexts.description}
+                        <p className="text-base text-neutral-600">
+                          {clickedElement.description}
                         </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
-                )}
-              </motion.div>
+
+                  {/* FEATURE: Background Click - Textbox overlay for background click (white space) */}
+                  {ENABLE_BACKGROUND_CLICK && (
+                    <AnimatePresence>
+                      {backgroundClick && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                          className="absolute border-2 rounded-lg shadow-xl p-4 max-w-xs z-50 pointer-events-auto"
+                          style={{
+                            left: `${backgroundClick.position.x}px`,
+                            top: `${backgroundClick.position.y}px`,
+                            transform: "translate(-50%, calc(-100% - 10px))",
+                            borderColor: "#6b7280", // neutral-500
+                            backgroundColor: colorToRgba("#6b7280", 0.7),
+                          }}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <button
+                            onClick={() => setBackgroundClick(null)}
+                            className="absolute top-2 right-2 text-neutral-400 hover:text-red-600 text-xl leading-none w-5 h-5 flex items-center justify-center"
+                          >
+                            ×
+                          </button>
+                          <h4 className="font-bold text-neutral-700 mb-2 pr-6">
+                            {backgroundPopupTexts.title}
+                          </h4>
+                          <p className="text-sm text-neutral-600">
+                            {backgroundPopupTexts.description}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  )}
+                </motion.div>
+
+                {/* Clickable elements list */}
+                <div className="w-80 border-l border-neutral-200 bg-neutral-50 overflow-y-auto">
+                  <div className="p-4">
+                    <h4 className="font-semibold text-neutral-700 mb-4 text-lg">
+                      Klikkbare områder
+                    </h4>
+                    <ul className="space-y-2">
+                      {(() => {
+                        const fileName = active.src.split("/").pop() || "";
+                        const clickableClasses =
+                          clickableClassesByFile[fileName] || [];
+                        const fileTexts = elementPopupTextsMap[fileName] || {};
+
+                        return clickableClasses.map((className) => {
+                          const elementTexts =
+                            fileTexts[className] || defaultElementPopupTexts;
+
+                          // Get the color from the SVG element
+                          let elementColor = "#22c55e"; // default green
+                          if (svgContainerRef.current) {
+                            const svgElement =
+                              svgContainerRef.current.querySelector("svg");
+                            if (svgElement) {
+                              const targetElement = svgElement.querySelector(
+                                `.${className}`
+                              ) as SVGElement;
+                              if (targetElement) {
+                                elementColor = getElementColor(targetElement);
+                              }
+                            }
+                          }
+
+                          const isActive =
+                            clickedElement &&
+                            Array.from(
+                              clickedElement.element.classList
+                            ).includes(className);
+
+                          // Function to apply hover effect to SVG element
+                          const applyHoverToSVG = () => {
+                            if (svgContainerRef.current) {
+                              const svgElement =
+                                svgContainerRef.current.querySelector("svg");
+                              if (svgElement) {
+                                const targetElements = Array.from(
+                                  svgElement.querySelectorAll(`.${className}`)
+                                ) as SVGElement[];
+                                targetElements.forEach((el) => {
+                                  const hoverStyle =
+                                    el.getAttribute("style") || "";
+                                  el.setAttribute(
+                                    "style",
+                                    `${hoverStyle.replace(
+                                      /filter:\s*[^;]+;?/g,
+                                      ""
+                                    )} cursor: pointer; filter: brightness(0.7);`.trim()
+                                  );
+                                });
+                              }
+                            }
+                          };
+
+                          // Function to remove hover effect from SVG element
+                          const removeHoverFromSVG = () => {
+                            if (svgContainerRef.current) {
+                              const svgElement =
+                                svgContainerRef.current.querySelector("svg");
+                              if (svgElement) {
+                                const targetElements = Array.from(
+                                  svgElement.querySelectorAll(`.${className}`)
+                                ) as SVGElement[];
+                                targetElements.forEach((el) => {
+                                  const leaveStyle =
+                                    el.getAttribute("style") || "";
+                                  el.setAttribute(
+                                    "style",
+                                    leaveStyle
+                                      .replace(/filter:\s*[^;]+;?/g, "")
+                                      .replace(/cursor:\s*[^;]+;?/g, "")
+                                      .trim()
+                                  );
+                                });
+                              }
+                            }
+                          };
+
+                          return (
+                            <li key={className}>
+                              <button
+                                onMouseEnter={applyHoverToSVG}
+                                onMouseLeave={removeHoverFromSVG}
+                                onClick={() => {
+                                  // Simulate clicking on the SVG element
+                                  if (svgContainerRef.current) {
+                                    const svgElement =
+                                      svgContainerRef.current.querySelector(
+                                        "svg"
+                                      );
+                                    if (svgElement) {
+                                      const targetElement =
+                                        svgElement.querySelector(
+                                          `.${className}`
+                                        ) as SVGElement;
+                                      if (targetElement) {
+                                        // Create a synthetic click event
+                                        const rect =
+                                          targetElement.getBoundingClientRect();
+                                        const containerRect =
+                                          svgContainerRef.current.getBoundingClientRect();
+                                        const syntheticEvent = {
+                                          clientX:
+                                            rect.left +
+                                            rect.width / 2 -
+                                            containerRect.left,
+                                          clientY:
+                                            rect.top +
+                                            rect.height / 2 -
+                                            containerRect.top,
+                                        } as MouseEvent;
+
+                                        handleSVGElementClick(
+                                          syntheticEvent,
+                                          targetElement,
+                                          active.src
+                                        );
+                                      }
+                                    }
+                                  }
+                                }}
+                                className="w-full text-left p-3 rounded-lg border-2 transition-all hover:shadow-md cursor-pointer"
+                                style={{
+                                  borderColor: elementColor,
+                                  backgroundColor: isActive
+                                    ? colorToRgba(elementColor, 0.2)
+                                    : colorToRgba(elementColor, 0.05),
+                                }}
+                              >
+                                <div className="font-medium text-neutral-800 text-sm">
+                                  {elementTexts.title}
+                                </div>
+                                <div className="text-xs text-neutral-600 mt-1 line-clamp-2">
+                                  {elementTexts.description}
+                                </div>
+                              </button>
+                            </li>
+                          );
+                        });
+                      })()}
+                    </ul>
+                  </div>
+                </div>
+              </div>
 
               {/* Info popup */}
               {ENABLE_INFO_BUTTON && (
@@ -955,5 +1290,14 @@ const cards: Array<{
     ctaText: "Se mer",
     ctaLink: "#",
     content: firstFloorCard.content,
+  },
+  {
+    description: underetasjeCard.description,
+    title: underetasjeCard.title,
+    src: "/U1.svg",
+    thumbnail: "/U1.svg",
+    ctaText: "Se mer",
+    ctaLink: "#",
+    content: underetasjeCard.content,
   },
 ];
