@@ -92,12 +92,12 @@ export function ClassicStickyScroll({ items }: ClassicStickyScrollProps) {
                       WebkitBackdropFilter: "blur(10px)",
                     }}
                   >
-                    <p className="text-sm leading-relaxed text-indigo-950/90 drop-shadow-lg sm:text-base">
+                    <p className="text-sm leading-relaxed text-black/90 drop-shadow-lg sm:text-base">
                       <strong>
                         Dette er kun et tidlig innblikk i det nye helsebygget.
                       </strong>
                     </p>
-                    <p className="text-sm leading-relaxed text-indigo-950/90 drop-shadow-lg sm:text-base">
+                    <p className="text-sm leading-relaxed text-black/90 drop-shadow-lg sm:text-base">
                       Skissene du ser her er foreløpige ideer fra arkitektene og
                       ment som inspirasjon. De representerer ikke endelige valg
                       eller beslutninger om interiør eller design. Det endelige
@@ -126,11 +126,11 @@ export function ClassicStickyScroll({ items }: ClassicStickyScrollProps) {
                     <div className="h-px flex-1 bg-gradient-to-r from-black/40 to-transparent" />
                   </div>
 
-                  <h2 className="mb-4 text-2xl font-extrabold leading-tight text-indigo-950 drop-shadow-2xl sm:text-3xl">
+                  <h2 className="mb-4 text-2xl font-extrabold leading-tight text-black drop-shadow-2xl sm:text-3xl">
                     {item.title}
                   </h2>
 
-                  <p className="text-sm leading-relaxed text-indigo-950/90 drop-shadow-lg sm:text-base">
+                  <p className="text-sm leading-relaxed text-black/90 drop-shadow-lg sm:text-base">
                     {item.description}
                   </p>
 
@@ -149,7 +149,7 @@ export function ClassicStickyScroll({ items }: ClassicStickyScrollProps) {
                       });
                     }
                   }}
-                  className="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 text-sm font-medium text-indigo-950 rounded-full transition-colors whitespace-nowrap sm:bottom-12"
+                  className="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 text-sm font-medium text-black rounded-full transition-colors whitespace-nowrap sm:bottom-12"
                   style={{
                     boxShadow:
                       "0 4px 32px 0 rgba(30,41,59,0.20), 0 1.5px 8px 0 rgba(255,255,255,0.14) inset",

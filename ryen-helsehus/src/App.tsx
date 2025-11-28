@@ -27,7 +27,7 @@ function App() {
           <nav className="flex items-center gap-6">
             <button
               onClick={() => setPage("fortelling")}
-              className="px-4 py-2 text-indigo-950 rounded-full transition-colors font-medium text-md whitespace-nowrap"
+              className="px-4 py-2 text-black rounded-full transition-colors font-medium text-md whitespace-nowrap"
               style={{
                 boxShadow:
                   "0 4px 32px 0 rgba(30,41,59,0.20), 0 1.5px 8px 0 rgba(255,255,255,0.14) inset",
@@ -54,7 +54,7 @@ function App() {
             </button>
             <button
               onClick={() => setPage("medvirkning")}
-              className="px-4 py-2 text-indigo-950 rounded-full transition-colors font-medium text-md whitespace-nowrap"
+              className="px-4 py-2 text-black rounded-full transition-colors font-medium text-md whitespace-nowrap"
               style={{
                 boxShadow:
                   "0 4px 32px 0 rgba(30,41,59,0.20), 0 1.5px 8px 0 rgba(255,255,255,0.14) inset",
@@ -81,7 +81,7 @@ function App() {
             </button>
             <button
               onClick={() => setPage("about")}
-              className="px-4 py-2 text-indigo-950 rounded-full transition-colors font-medium text-md whitespace-nowrap"
+              className="px-4 py-2 text-black rounded-full transition-colors font-medium text-md whitespace-nowrap"
               style={{
                 boxShadow:
                   "0 4px 32px 0 rgba(30,41,59,0.20), 0 1.5px 8px 0 rgba(255,255,255,0.14) inset",
