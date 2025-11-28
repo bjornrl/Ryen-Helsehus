@@ -77,23 +77,65 @@ export function ClassicStickyScroll({ items }: ClassicStickyScrollProps) {
               }}
               className="relative flex h-[calc(100vh-4rem)] snap-start flex-col justify-end pb-8 sm:pb-12"
             >
-              <div className="max-w-md rounded-md border border-black/20 p-6 shadow-2xl backdrop-blur-md sm:p-8">
-                <div className="mb-4 flex items-center gap-3">
-                  {/* <div id="section-number" className="flex h-8 w-8 items-center justify-center rounded-full bg-black/20 text-sm font-bold text-black backdrop-blur-sm">
-                    {index + 1}
-                  </div> */}
-                  <div className="h-px flex-1 bg-gradient-to-r from-black/40 to-transparent" />
+              <div className="flex flex-col gap-4">
+                {/* First text box - only show in first frame */}
+                {index === 0 && (
+                  <div
+                    className="max-w-md rounded-2xl p-6 sm:p-8"
+                    style={{
+                      boxShadow:
+                        "0 4px 32px 0 rgba(30,41,59,0.20), 0 1.5px 8px 0 rgba(255,255,255,0.14) inset",
+                      border: "1.5px solid rgba(224,231,255,0.27)",
+                      background:
+                        "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)",
+                      backdropFilter: "blur(10px)",
+                      WebkitBackdropFilter: "blur(10px)",
+                    }}
+                  >
+                    <p className="text-sm leading-relaxed text-indigo-950/90 drop-shadow-lg sm:text-base">
+                      <strong>
+                        Dette er kun et tidlig innblikk i det nye helsebygget.
+                      </strong>
+                    </p>
+                    <p className="text-sm leading-relaxed text-indigo-950/90 drop-shadow-lg sm:text-base">
+                      Skissene du ser her er foreløpige ideer fra arkitektene og
+                      ment som inspirasjon. De representerer ikke endelige valg
+                      eller beslutninger om interiør eller design. Det endelige
+                      uttrykket vil utvikle seg videre i prosessen.
+                    </p>
+                  </div>
+                )}
+
+                {/* Main text box - always shown */}
+                <div
+                  className="max-w-md rounded-2xl p-6 sm:p-8"
+                  style={{
+                    boxShadow:
+                      "0 4px 32px 0 rgba(30,41,59,0.20), 0 1.5px 8px 0 rgba(255,255,255,0.14) inset",
+                    border: "1.5px solid rgba(224,231,255,0.27)",
+                    background:
+                      "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)",
+                    backdropFilter: "blur(10px)",
+                    WebkitBackdropFilter: "blur(10px)",
+                  }}
+                >
+                  <div className="mb-4 flex items-center gap-3">
+                    {/* <div id="section-number" className="flex h-8 w-8 items-center justify-center rounded-full bg-black/20 text-sm font-bold text-black backdrop-blur-sm">
+                      {index + 1}
+                    </div> */}
+                    <div className="h-px flex-1 bg-gradient-to-r from-black/40 to-transparent" />
+                  </div>
+
+                  <h2 className="mb-4 text-2xl font-extrabold leading-tight text-indigo-950 drop-shadow-2xl sm:text-3xl">
+                    {item.title}
+                  </h2>
+
+                  <p className="text-sm leading-relaxed text-indigo-950/90 drop-shadow-lg sm:text-base">
+                    {item.description}
+                  </p>
+
+                  <div className="mt-6 h-1 w-16 rounded-full bg-gradient-to-r from-black/60 to-transparent" />
                 </div>
-
-                <h2 className="mb-4 text-2xl font-extrabold leading-tight text-black drop-shadow-2xl sm:text-3xl">
-                  {item.title}
-                </h2>
-
-                <p className="text-sm leading-relaxed text-black/95 drop-shadow-lg sm:text-base">
-                  {item.description}
-                </p>
-
-                <div className="mt-6 h-1 w-16 rounded-full bg-gradient-to-r from-black/60 to-transparent" />
               </div>
 
               {/* Scroll down button - only in first section */}
@@ -107,7 +149,28 @@ export function ClassicStickyScroll({ items }: ClassicStickyScrollProps) {
                       });
                     }
                   }}
-                  className="absolute bottom-8 left-1/2 rounded-full border border-black/30 bg-black/10 px-6 py-3 text-sm font-semibold text-black backdrop-blur-md transition-all hover:bg-black/20 hover:border-black/50 sm:bottom-12"
+                  className="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 text-sm font-medium text-indigo-950 rounded-full transition-colors whitespace-nowrap sm:bottom-12"
+                  style={{
+                    boxShadow:
+                      "0 4px 32px 0 rgba(30,41,59,0.20), 0 1.5px 8px 0 rgba(255,255,255,0.14) inset",
+                    border: "1.5px solid rgba(224,231,255,0.27)",
+                    background:
+                      "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)",
+                    backdropFilter: "blur(10px)",
+                    WebkitBackdropFilter: "blur(10px)",
+                    transition: "background 0.3s, color 0.3s",
+                    cursor: "pointer",
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.background =
+                      "linear-gradient(133deg, rgba(100,116,139,0.10) 0%, rgba(203,213,225,0.25) 100%)";
+                    e.currentTarget.style.color = "#fff";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.background =
+                      "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)";
+                    e.currentTarget.style.color = "#312e81";
+                  }}
                 >
                   Scroll nedover
                 </button>

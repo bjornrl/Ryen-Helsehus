@@ -11,20 +11,102 @@ function App() {
   return (
     <div className="h-screen bg-slate-300 text-white flex flex-col overflow-hidden py-2 px-4 sm:px-2 gap-2">
       <header className="flex-shrink-0 relative z-50 ">
-        <div className="mx-auto bg-stone-100 rounded-2xl shadow-lg flex items-center justify-between px-6 py-3 h-16">
+        <div className="mx-auto rounded-2xl  flex items-center justify-between px-6 py-3 h-16">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-400/20 text-sky-600 font-semibold">
-              RH
-            </div>
-            <div className="leading-tight">
-              <p className="text-sm sm:text-base font-semibold tracking-wide text-neutral-900">
-                Ryen Helsehus
-              </p>
-            </div>
+            <p
+              className="text-xl sm:text-2xl font-bold text-white"
+              style={{
+                fontFamily: "Greve, sans-serif",
+                mixBlendMode: "difference",
+              }}
+            >
+              RYEN HELSEHUS
+            </p>
           </div>
 
           <nav className="flex items-center gap-6">
             <button
+              onClick={() => setPage("fortelling")}
+              className="px-4 py-2 text-indigo-950 rounded-full transition-colors font-medium text-md whitespace-nowrap"
+              style={{
+                boxShadow:
+                  "0 4px 32px 0 rgba(30,41,59,0.20), 0 1.5px 8px 0 rgba(255,255,255,0.14) inset",
+                border: "1.5px solid rgba(224,231,255,0.27)",
+                background:
+                  "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                transition: "background 0.3s, color 0.3s",
+                cursor: "pointer",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background =
+                  "linear-gradient(133deg, rgba(100,116,139,0.10) 0%, rgba(203,213,225,0.25) 100%)";
+                e.currentTarget.style.color = "#fff";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background =
+                  "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)";
+                e.currentTarget.style.color = "#312e81";
+              }}
+            >
+              Hjem
+            </button>
+            <button
+              onClick={() => setPage("medvirkning")}
+              className="px-4 py-2 text-indigo-950 rounded-full transition-colors font-medium text-md whitespace-nowrap"
+              style={{
+                boxShadow:
+                  "0 4px 32px 0 rgba(30,41,59,0.20), 0 1.5px 8px 0 rgba(255,255,255,0.14) inset",
+                border: "1.5px solid rgba(224,231,255,0.27)",
+                background:
+                  "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                transition: "background 0.3s, color 0.3s",
+                cursor: "pointer",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background =
+                  "linear-gradient(133deg, rgba(100,116,139,0.10) 0%, rgba(203,213,225,0.25) 100%)";
+                e.currentTarget.style.color = "#fff";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background =
+                  "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)";
+                e.currentTarget.style.color = "#312e81";
+              }}
+            >
+              Medvirknings-planer
+            </button>
+            <button
+              onClick={() => setPage("about")}
+              className="px-4 py-2 text-indigo-950 rounded-full transition-colors font-medium text-md whitespace-nowrap"
+              style={{
+                boxShadow:
+                  "0 4px 32px 0 rgba(30,41,59,0.20), 0 1.5px 8px 0 rgba(255,255,255,0.14) inset",
+                border: "1.5px solid rgba(224,231,255,0.27)",
+                background:
+                  "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                transition: "background 0.3s, color 0.3s",
+                cursor: "pointer",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background =
+                  "linear-gradient(133deg, rgba(100,116,139,0.10) 0%, rgba(203,213,225,0.25) 100%)";
+                e.currentTarget.style.color = "#fff";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background =
+                  "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)";
+                e.currentTarget.style.color = "#312e81";
+              }}
+            >
+              Rendere og bilder fra prosessen
+            </button>
+            {/* <button
               type="button"
               onClick={() => setPage("fortelling")}
               className={`px-4 py-2 text-sm font-medium transition uppercase tracking-wide ${
@@ -33,7 +115,7 @@ function App() {
                   : "text-neutral-500 hover:text-neutral-700"
               }`}
             >
-              Homepage
+              Hjem
             </button>
             <button
               type="button"
@@ -44,7 +126,7 @@ function App() {
                   : "text-neutral-500 hover:text-neutral-700"
               }`}
             >
-              Overview
+              Medvirknings-planer
             </button>
             <button
               type="button"
@@ -55,8 +137,8 @@ function App() {
                   : "text-neutral-500 hover:text-neutral-700"
               }`}
             >
-              Inspiration
-            </button>
+              Rendere og bilder fra prosessen
+            </button> */}
           </nav>
         </div>
       </header>
