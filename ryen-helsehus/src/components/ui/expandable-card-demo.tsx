@@ -24,30 +24,48 @@ const ENABLE_INFO_BUTTON = false;
 // Whitelist of clickable class names per SVG file
 // Only elements with these classes will be clickable
 const clickableClassesByFile: Record<string, string[]> = {
-  "plan_01_alt.svg": [
-    "cls-13", // felles inngang (blue)
-    "cls-17", // kafe (light gray)
-    "cls-16", // møtesenter/samhandling (yellow)
-    "cls-15", // Kantine (light green)
-    "cls-1", // Kantine (light gray)
-    "cls-20", // Red element
-    "cls-4", // Red stroke element
-    "cls-21", // Mauve/pink element
-    "cls-18", // Light blue/gray element
+  "E1.svg": [
+    "cls-11", // atrium
+    "cls-12", // vareheis
+    "cls-2", // Næringslokale
+    "cls-13", // Ansatt-café
+    "cls-15", // Kafé
+    "cls-1", // Trappeoppgang
+    "cls-7", // Felles inngang
   ],
-  "plan_02_alt.svg": [
-    "cls-3", // gåsone
-    "cls-21", // vareheis
-    "cls-16", // Back Office
-    "cls-14", // ventesone
-    "cls-13", // verksted
+  "E2.svg": [
+    "cls-15", // Atrium
+    "cls-18", // Vareheis
+    "cls-16", // JAM Skobutikk
+    "cls-22", // Administrasjon/Kontor
+    "cls-17", // Ventesone for pasienter
+    "cls-19", // Fysiorom
+    "cls-12", // Prøverom
+    "cls-14", // Gangbane
+    "cls-21", // Intern trapp
+    "cls-1", // Trappeoppgang
   ],
-  "plan_03_alt.svg": [
-    "cls-12", // stillerom
-    "cls-15", // åpent landskap
-    "cls-6", // kontor/pasientfri sone
-    "cls-13", // verksted
-    "cls-22", // ansatt-kjøkken
+  "E3.svg": [
+    "cls-1", // Trappeoppgang
+    "cls-19", // Sosial sone
+    "cls-21", // Kontor Leder
+    "cls-15", // Stillerom
+    "cls-17", // Åpent landskap
+    "cls-10", // Atrium
+    "cls-20", // Intern trapp
+    "cls-16", // verksted
+    "cls-9", // intern heis
+    "cls-17", // Åpent landskap
+    "cls-10", // Atrium
+    "cls-20", // Intern trapp
+    "cls-16", // verksted
+    "cls-9", // intern heis
+  ],
+  "U1.svg": [
+    "cls-12", // Lager OT
+    "cls-15", // Lager JAM
+    "cls-11", // Produksjonsrom
+    "cls-14", // parkeringskjeller-rampe
   ],
 };
 
@@ -94,10 +112,10 @@ function SectionDiagramSVG({
 
     // Map of class names to floor indices
     const classToFloorMap: Record<string, number> = {
-      "cls-19": 0, // tredje etasje (third floor)
-      "cls-20": 1, // andre etasje (second floor)
-      "cls-16": 2, // første etasje (first floor)
-      "cls-17": 3, // underetasje (U1) - not yet implemented
+      "cls-19": 0, // tredje etasje (E3)
+      "cls-20": 1, // andre etasje (E2)
+      "cls-16": 2, // første etasje (E1)
+      "cls-17": 3, // underetasje (U1)
     };
 
     const handleMouseEnter = (e: Event) => {
@@ -152,12 +170,6 @@ function SectionDiagramSVG({
       if (clickableClass) {
         const floorIndex = classToFloorMap[clickableClass];
         console.log("Section diagram clicked:", { clickableClass, floorIndex }); // Debug
-
-        // cls-17 (underetasje) is not yet implemented, so we'll skip it for now
-        if (floorIndex === 3) {
-          console.log("Underetasje (U1) not yet implemented");
-          return;
-        }
 
         onFloorClick(floorIndex);
       }
@@ -795,22 +807,19 @@ export function ExpandableCardDemo() {
       </div>
 
       {/* Main Content Area */}
-      {!active && (
-        <div className="flex-1 overflow-y-auto bg-white">
-          <div className="h-full flex justify-start flex-col items-start p-8">
-            <p className="text-neutral-800 text-2xl font-medium">
-              Klikk på et kort i listen til venstre for å se detaljer om
-              planene.
-            </p>
-            <SectionDiagramSVG
-              onFloorClick={(floorIndex) => {
-                // Map floor index to card: 0 = third floor, 1 = second floor, 2 = first floor
-                setActive(cards[floorIndex]);
-              }}
-            />
-          </div>
+      <div className="flex-1 overflow-y-auto bg-white">
+        <div className="h-full flex justify-start flex-col items-start p-8">
+          <p className="text-neutral-800 text-2xl font-medium">
+            Klikk på et kort i listen til venstre for å se detaljer om planene.
+          </p>
+          <SectionDiagramSVG
+            onFloorClick={(floorIndex) => {
+              // Map floor index to card: 0 = third floor, 1 = second floor, 2 = first floor, 3 = underetasje
+              setActive(cards[floorIndex]);
+            }}
+          />
         </div>
-      )}
+      </div>
 
       {/* Expanded Card Modal - Centered Overlay */}
       <AnimatePresence>
@@ -1033,7 +1042,7 @@ export function ExpandableCardDemo() {
                             fileTexts[className] || defaultElementPopupTexts;
 
                           // Get the color from the SVG element
-                          let elementColor = "#22c55e"; // default green
+                          let elementColor = "#94a3b8"; // muted slate-400
                           if (svgContainerRef.current) {
                             const svgElement =
                               svgContainerRef.current.querySelector("svg");
@@ -1270,8 +1279,8 @@ const cards: Array<{
   {
     description: thirdFloorCard.description,
     title: thirdFloorCard.title,
-    src: "/plan_03_alt.svg",
-    thumbnail: "/plan_03_alt.svg", // Smaller thumbnail for sidebar
+    src: "/E3.svg",
+    thumbnail: "/E3.svg",
     ctaText: "Se mer",
     ctaLink: "#",
     content: thirdFloorCard.content,
@@ -1279,8 +1288,8 @@ const cards: Array<{
   {
     description: secondFloorCard.description,
     title: secondFloorCard.title,
-    src: "/plan_02_alt.svg",
-    thumbnail: "/plan_02_alt.svg", // Smaller thumbnail for sidebar
+    src: "/E2.svg",
+    thumbnail: "/E2.svg",
     ctaText: "Se mer",
     ctaLink: "#",
     content: secondFloorCard.content,
@@ -1288,8 +1297,8 @@ const cards: Array<{
   {
     description: firstFloorCard.description,
     title: firstFloorCard.title,
-    src: "/plan_01_alt.svg",
-    thumbnail: "/plan_01_alt.svg", // Smaller thumbnail for sidebar
+    src: "/E1.svg",
+    thumbnail: "/E1.svg",
     ctaText: "Se mer",
     ctaLink: "#",
     content: firstFloorCard.content,

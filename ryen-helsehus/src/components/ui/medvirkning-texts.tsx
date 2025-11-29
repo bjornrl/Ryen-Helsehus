@@ -29,138 +29,163 @@ export const elementPopupTextsMap: Record<
   string,
   Record<string, { title: string; description: string; image?: string }>
 > = {
-  // Plan 01 Alt (Første etasje)
-  "plan_01_alt.svg": {
-    // "cls-14": {
-    //   // skosalg
-    //   title: "Skosalg",
-    //   description:
-    //     "Vi ønsker at J. A. Magnussen og deres skobutikk blir med inn i det nye bygget. Det kan være disse skal få egen inngang til bygget. Arealet er tilsvarende det de har i dag i Ryensvingen 6",
-    // },
+  // E1 (Første etasje)
+  "E1.svg": {
+    "cls-11": {
+      title: "Atrium",
+      description:
+        "For å slippe inn mer lys, samt for å tenke langsiktig med den mulige utviklingen av nabotomta, er det tenkt å ha et atrium i bygget.",
+    },
+    "cls-12": {
+      title: "Intern heis / Vareheis",
+      description:
+        "Vi planlegger å ha en intern vareheis for de ansatte midt i bygget. Denne vil være lett tilgjengelig for verkstedene til OT i de øvrige etajene.",
+    },
+    "cls-2": {
+      title: "Næringslokale",
+      description:
+        "Vi har flere lokaler i 1. etasje som er tiltekt andre leietakere.",
+    },
     "cls-13": {
-      // Trapp
-      title: "Trappeoppgang",
+      title: "Ansatt-café",
       description:
-        "Vi ønsker at de besøkende som kan ta trappen, gjør dette for både egen helse og flyten til bygget. Designet av trappeoppgangen vil derfor være spesielt inviterende",
-    },
-    "cls-17": {
-      // Kantine (stor)
-      title: "Kantine",
-      description:
-        "Vi ser for oss en felles sosial sone for de ansatte i 1.etg. Dette rommet vil være tilpasset arrangementer og foredrag, og vil kunne ha matservering til lunsj.",
-    },
-    "cls-16": {
-      // Skosalg
-      title: "Skosalg",
-      description:
-        "Vi ønsker at J. A. Magnussen og deres skobutikk blir med inn i det nye bygget. Det kan være disse skal få egen inngang til bygget. Arealet er tilsvarende det de har i dag i Ryensvingen 6",
+        "Vi ser for oss en felles sosial spisesone for ansatte i første etasje. Dette rommet vil være tilpasset arrangementer og foredrag samt ha matservering til lunsj.",
     },
     "cls-15": {
-      // Felles inngang
-      title: "Felles inngang",
-      description:
-        "Vi ser for oss et felles inngangsparti for hele bygget, med en husvert og innsjekk av besøkende. Her vil de besøkende kunne bli vist rett til etasjen/tjenesten de skal til, eller få muligheten til å vente i Kafeen. ",
-      image: "/images/plan_01_møblert.jpg",
-    },
-    "cls-1": {
-      // Kantine (Kjøkken/Oppvask)
-      title: "Kantine",
-      description:
-        "Vi ser for oss en felles sosial sone for de ansatte i 1.etg. Dette rommet vil være tilpasset arrangementer og foredrag, og vil kunne ha matservering til lunsj.",
-    },
-    "cls-20": {
-      // Heis
-      title: "Intern heis",
-      description:
-        "Vi planlegger rundt å ha en intern heis / vareheis for de ansatte midt i bygget. Denne vil være lett tilgjengelig for verkstedene til OT i de øvre etasjene.",
-    },
-    // "cls-4": {
-    //   // Trapp
-    //   title: "Trappeoppgang",
-    //   description:
-    //     "Vi ønsker at de besøkende som kan ta trappen, gjør dette for både egen helse og flyten til bygget. Designet av trappeoppgangen vil derfor være spesielt inviterende",
-    // },
-    "cls-21": {
-      // Kafé
       title: "Kafé",
       description:
-        "Kafeen vil bli det varme og sosiale møtet med bygget, for både ansatte og besøkende. Den er plassert svært synlig i hjørnet der Enebakkveien og Vårveien møtes.",
+        "Kaféen vil bli det varme og sosiale møtet med bygget, både for ansatte og besøkende. Den er plassert svært synlig i hjørnet der Enebakkveien og Vårveien møtes.",
+    },
+    "cls-1": {
+      title: "Trappeoppgang",
+      description:
+        "Vi ønsker at alle som kan ta trappen, gjør det. Det vil naturligvis være positivt for egen helse, men også for flyten av mennesker gjennom bygget. Designet av trappeoppgangen vil derfor være spesielt inviterende.",
+    },
+    "cls-7": {
+      title: "Felles inngang",
+      description:
+        "Vi ser for oss ett felles inngangsparti for hele bygget, med en husvert og innsjekk for besøkende. Her vil de besøkende kunne bli vist rett til etasjen eller tjenesten de skal til, eller få muligheten til å vente i kaféen.",
+    },
+  },
+  // E2 (Andre etasje)
+  "E2.svg": {
+    "cls-15": {
+      title: "Atrium",
+      description:
+        "For å slippe inn mer lys, samt for å tenke langsiktig med den mulige utviklingen av nabotomta, er det tenkt å ha et atrium i bygget.",
     },
     "cls-18": {
-      //Møtesenter/Samhandling
-      title: "Møtesenter/Samhandling",
+      title: "Intern Heis / Vareheis",
       description:
-        "Vi ser for oss at det kan være rom dedikert til samarbeid eller møter i 1.etg. Utformingen og den spesifikke funksjonen til disse gjenstår å bestemme. ",
-    },
-  },
-  // Plan 02 Alt (Andre etasje)
-  "plan_02_alt.svg": {
-    "cls-3": {
-      // gåsone
-      title: "Gåsone",
-      description:
-        "Vi ønsker å lage en dedikert gåsone for pasienter som har behov for dette. Denne kan også plasseres i gangen på motsatt side av bygget, i tilknytning til trappen, men blir den ikke like skjermet fra de andre prøverommene. ",
-      image: "/images/gang.png",
-    },
-    "cls-21": {
-      // vareheis
-      title: "Intern trapp",
-      description:
-        "I tillegg til vareheisen, er det tenkt å ha en enkelt intern trapp som knytter verkstedene i etasje 2 og 3.",
+        "Vi planlegger å ha en intern vareheis for de ansatte midt i bygget. Denne vil være lett tilgjengelig for verkstedene til OT i de øvrige etajene.",
     },
     "cls-16": {
-      // Back Office
-      title: "Back Office",
+      title: "JAM Skobutikk",
       description:
-        "Vi ser for oss at det bør være noen plasser til enkelte administrativt ansatte i tilknytning til resepsjonen. Behovet for denne sonen blir mindre om man flytter flere resepsjonsfunksjoner til 1.etg.",
-    },
-    "cls-14": {
-      // ventesone
-      title: "Ventesone",
-      description:
-        "I denne etasjen vil OT ha sin egen ventesone og resepsjon for å ta imot besøkende. Størrelsen på denne er rundt 75% av dagens resepsjon på Ryen. Denne sonen kan bli enda mindre om man organiserer seg for det, blant annet om flere besøkende venter i kafeen i 1.etg. Man kan få 2-3 flere prøverom med en slik løsning.",
-    },
-    "cls-13": {
-      // verksted
-      title: "Verksted",
-      description:
-        "Vi ønsker at så mye av verkstedet som er relevant for pasientene plasseres i denne etasjen. Eksempelvis kort vei til sliperom for fotsenger vil være hensiktsmessig.",
-
-      image: "/images/arbeidsplass.png",
-    },
-  },
-  // Plan 03 Alt (Tredje etasje)
-  "plan_03_alt.svg": {
-    "cls-12": {
-      // stillerom
-      title: "Stillerom",
-      description:
-        "Vi ønsker å utforske muligheten for at vi jobber mer i åpne landskap når vi kan, og i dedikerte stillerom når vi har behov for dette.",
-    },
-    "cls-15": {
-      // åpent landskap
-      title: "Åpent landskap",
-      description:
-        "Det er i det åpne landskapet at de fleste teknikerne og ingeniørene vil ha sine faste plasser.",
-    },
-    "cls-6": {
-      // kontor/pasientfri sone
-      title: "Kontor/Pasientfri sone",
-      description:
-        "Denne etasjen er definert av at den skal være pasientfri, med fokus på produksjon, møterom og arbeidsplasser.",
-    },
-    "cls-13": {
-      // verksted
-      title: "Verksted",
-      description:
-        "Vi ser for oss at verkstedet blir et sted der man bare oppholder seg når man skal jobbe med verktøyene som er der, mens alle andre oppgaver utføres enten i arbeidsrommene eller det åpne landskapet.",
-      image: "/images/verksted.png",
+        "Vi tror det vil være hensiktsmessig å plasere JAM skobutikk i 2. etasje sammen med OT, og på den måten videreføre dagens svært positive synergier med denne butikken.",
     },
     "cls-22": {
-      // ansatt-kjøkken
-      title: "Te-kjøkken / Ansatt-kjøkken",
+      title: "Administrasjon/Kontor",
       description:
-        "Vi ønsker å plassere en dedikert sosial sone med te-kjøkken i 3.etg for de ansatte.",
+        "Vi ser for oss at det bør være noenplasser til enkelte administrasjonsansatte i tilknytting til den mindre resepsjonen i 2. etsje. Denne plassen er tenkt å tjenestegjøre både OT og JAM.",
+    },
+    "cls-17": {
+      title: "Ventesone for pasienter",
+      description:
+        "I 2. etajse er den planlagt for en mindre ventesone for pasienter. Resepsjonen og kaféen i 1. etasje er ment å fungere som primær ventesone.",
+    },
+    "cls-19": {
+      title: "Fysiorom",
+      description:
+        "Vi øsnker å få inn fysioterapeuter i 2. etasje og gjerne i nærheten av gangbanen.",
+    },
+    "cls-12": {
+      title: "Prøverom",
+      description:
+        "Prøverommene er strategisk plassert i nærheten til både fysio, gangbane, ventesone og til sliperommet.",
+    },
+    "cls-14": {
+      title: "Gangbane",
+      description:
+        "Vi ønsker å lage en dedikert gangbane for pasienter som har behov for dette. Her kan man tenke kreativt og dele opp gangen ved hjelp av hyller og skap som kan fungere som en skillevegg.",
+    },
+    "cls-21": {
+      title: "Intern trapp",
+      description:
+        "I tillegg til vareheisen, er det tenkt å ha en enkelt intern trapp som knytter sammen verkstedene i etasje to og tre.",
+    },
+    "cls-1": {
+      title: "Trappeoppgang",
+      description:
+        "Vi ønsker at alle som kan ta trappen, gjør det. Det vil naturligvis være positivt for egen helse, men også for flyten av mennesker gjennom bygget. Designet av trappeoppgangen vil derfor være spesielt inviterende.",
+    },
+  },
+  // E3 (Tredje etasje)
+  "E3.svg": {
+    "cls-1": {
+      title: "Trappeoppgang",
+      description:
+        "Vi ønsker at alle som kan ta trappen, gjør det. Det vil naturligvis være positivt for egen helse, men også for flyten av mennesker gjennom bygget. Designet av trappeoppgangen vil derfor være spesielt inviterende.",
+    },
+    "cls-19": {
+      title: "Sosial sone",
+      description:
+        "Vi ønsker å plassere en dedikert møteplass/sosial sone med te-kjøkken i 3. etasje. Her kan ansatte ha en plass å ta pauser og spise medbrakt lunsj.",
+    },
+    "cls-21": {
+      title: "Kontor Leder",
+      description:
+        "her finner vi kontorene til lederne på Ryen. HK har ikke noen kontorer her.",
+    },
+    "cls-15": {
+      title: "Stillerom",
+      description:
+        "Vi ønsker å utforske muligheten for at vi jobber mer i åpne landskap når vi kan og i dedikerte stillerom når vi har behov for dette.",
+    },
+    "cls-17": {
+      title: "Åpent landskap",
+      description:
+        "Det er i det åpne landskapet de fleste ingeniørene vil ha sine faste arbeidsplasser. De vil sitte sammen med administrativt ansatte og teknikerne.",
+    },
+    "cls-10": {
+      title: "Atrium",
+      description:
+        "For å slippe inn mer lys, samt for å tenke langsiktig med den mulige utviklingen av nabotomta, er det tenkt å ha et atrium i bygget.",
+    },
+    "cls-20": {
+      title: "Intern trapp",
+      description:
+        "I tillegg til vareheisen, er det tenkt å ha en enkelt intern trapp som knytter sammen verkstedene i etasje to og tre.",
+    },
+    "cls-16": {
+      title: "Verksted",
+      description:
+        "Vi ser for oss at verkstedet blir et sted der man kun oppholder seg når man skal jobbe med verktøyene som er der, mens alle andre oppgaver utføres enten i arbeidsrommene eller det åpne landskapet.",
+    },
+    "cls-9": {
+      title: "Intern heis",
+      description:
+        "Vi planlegger å ha en intern heis for de ansatte i 3. etasje. Denne vil være lett tilgjengelig for verkstedene til OT i de øvrige etajene.",
+    },
+  },
+  // U1 (Underetasje)
+  "U1.svg": {
+    "cls-12": {
+      title: "Lager OT",
+      description: "I kjellerlokalet finner vi laget for både OT og JAM",
+    },
+    "cls-15": {
+      title: "Lager JAM",
+      description: "I kjellerlokalet finner vi laget for både OT og JAM",
+    },
+    "cls-11": {
+      title: "Produksjonsrom",
+      description:
+        "De fleste produksjonrommene er plassert i U1. Dette er en etasje som ligger delvis under bakken, men har vinduer f.o.m. Prepreg.rommet.",
+    },
+    "cls-14": {
+      title: "Parkeringskjeller-rampe",
+      description: "Her går rampen ned til parkeringskjelleren i U2",
     },
   },
 };
@@ -257,9 +282,7 @@ export const underetasjeCard = {
   description: "U1",
   content: () => (
     <div>
-      <p>
-        Underetasje (U1) plan.
-      </p>
+      <p>Underetasje (U1) plan.</p>
     </div>
   ),
 };

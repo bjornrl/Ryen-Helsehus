@@ -33,6 +33,7 @@
 
       .cls-10, .cls-11, .cls-12 {
         font-size: 29.15px;
+        z-index: 50;
       }
 
       .cls-10, .cls-13 {
@@ -50,10 +51,11 @@
 
       .cls-11 {
         font-family: ArialMT, Arial;
+        stroke: black;
       }
 
       .cls-6 {
-        stroke: red;
+        stroke: #9c7278;
         stroke-width: .85px;
       }
 
@@ -66,15 +68,16 @@
       }
 
       .cls-16 {
-        fill: #ffe600;
+        fill: #d7cca8;
       }
 
       .cls-17 {
-        fill: #19ff00;
+        fill: #a6b88f;
       }
 
       .cls-18 {
         fill: #c2adad;
+        z-index: 50;
       }
 
       .cls-8 {
@@ -82,7 +85,7 @@
       }
 
       .cls-19 {
-        fill: red;
+        fill: #9c7278;
       }
 
       .cls-13 {
@@ -90,7 +93,7 @@
       }
 
       .cls-20 {
-        fill: #0019ff;
+        fill: #c8d6db;
       }
 
       .cls-21 {
@@ -567,31 +570,33 @@
   <text class="cls-12" transform="translate(2035.01 1150.5) rotate(-90)"><tspan x="0" y="0">4500</tspan></text>
   <text class="cls-12" transform="translate(2035.01 1336.44) rotate(-90)"><tspan x="0" y="0">4500</tspan></text>
   <text class="cls-12" transform="translate(2035.01 1491.38) rotate(-90)"><tspan x="0" y="0">3000</tspan></text>
-  <polygon points="584.13 1397.29 588.76 1371.05 579.5 1371.05 584.13 1397.29"/>
-  <polyline class="cls-2" points="584.13 1397.29 588.76 1371.05 579.5 1371.05 584.13 1397.29"/>
-  <line class="cls-3" x1="584.13" y1="1349.86" x2="526.49" y2="1349.86"/>
-  <polygon points="583.95 1211.35 588.58 1185.11 579.32 1185.11 583.95 1211.35"/>
-  <polyline class="cls-2" points="583.95 1211.35 588.58 1185.11 579.32 1185.11 583.95 1211.35"/>
-  <line class="cls-3" x1="583.95" y1="1174.23" x2="522.69" y2="1174.23"/>
-  <polygon points="586.06 1025.41 590.69 999.18 581.44 999.18 586.06 1025.41"/>
-  <polyline class="cls-2" points="586.06 1025.41 590.69 999.18 581.44 999.18 586.06 1025.41"/>
-  <line class="cls-3" x1="586.06" y1="996.79" x2="535.36" y2="996.79"/>
-  <polygon points="590.29 864.27 594.91 838.03 585.66 838.03 590.29 864.27"/>
-  <polyline class="cls-2" points="590.29 864.27 594.91 838.03 585.66 838.03 590.29 864.27"/>
-  <line class="cls-3" x1="590.29" y1="825.68" x2="523.75" y2="825.68"/>
-  <polygon points="591.34 703.12 595.97 676.89 586.72 676.89 591.34 703.12"/>
-  <polyline class="cls-2" points="591.34 703.12 595.97 676.89 586.72 676.89 591.34 703.12"/>
-  <line class="cls-3" x1="591.34" y1="664.07" x2="516.35" y2="664.07"/>
-  <polygon points="590.29 541.98 594.91 515.74 585.66 515.74 590.29 541.98"/>
-  <polyline class="cls-2" points="590.29 541.98 594.91 515.74 585.66 515.74 590.29 541.98"/>
-  <line class="cls-3" x1="590.29" y1="508.8" x2="522.69" y2="508.8"/>
-  <polygon points="764.71 380.84 769.34 354.6 760.08 354.6 764.71 380.84"/>
-  <polyline class="cls-2" points="764.71 380.84 769.34 354.6 760.08 354.6 764.71 380.84"/>
-  <line class="cls-3" x1="764.71" y1="332.41" x2="689.72" y2="332.41"/>
-  <polygon points="1159.6 178.37 1164.23 152.13 1154.97 152.13 1159.6 178.37"/>
-  <polyline class="cls-2" points="1159.6 178.37 1164.23 152.13 1154.97 152.13 1159.6 178.37"/>
-  <line class="cls-3" x1="1159.6" y1="140.64" x2="1100.45" y2="140.64"/>
-  <line class="cls-3" x1="1159.6" y1="178.37" x2="1159.6" y2="140.64"/>
+  <polygon className="cls-3" points="584.13 1397.29 588.76 1371.05 579.5 1371.05 584.13 1397.29"/>
+  <polygon className="cls-3" points="583.95 1211.35 588.58 1185.11 579.32 1185.11 583.95 1211.35"/>
+  <polygon className="cls-3" points="586.06 1025.41 590.69 999.18 581.44 999.18 586.06 1025.41"/>
+  <polygon className="cls-3" points="590.29 864.27 594.91 838.03 585.66 838.03 590.29 864.27"/>
+  <polygon className="cls-3" points="591.34 703.12 595.97 676.89 586.72 676.89 591.34 703.12"/>
+  <polygon className="cls-3" points="590.29 541.98 594.91 515.74 585.66 515.74 590.29 541.98"/>
+  <polygon className="cls-3" points="764.71 380.84 769.34 354.6 760.08 354.6 764.71 380.84"/>
+  <polygon className="cls-3" points="1159.6 178.37 1164.23 152.13 1154.97 152.13 1159.6 178.37"/>
+  <text class="cls-13" transform="translate(63.42 1296.42)"><tspan x="0" y="0">Oluf Onsuns</tspan></text>
+  <text class="cls-13" transform="translate(63.42 1352.72)"><tspan x="0" y="0">Vei</tspan></text>
+  <text class="cls-13" transform="translate(2077.08 1182.87)"><tspan x="0" y="0">Enebakkveien</tspan></text>
+  <polygon points="579.64 1521.24 584.27 1495.01 575.01 1495.01 579.64 1521.24"/>
+  <g>
+  </g>
+  <rect class="cls-17" x="367.06" y="1224.46" width="1578.36" height="172.83"/>
+  <rect class="cls-16" x="367.06" y="1038.52" width="1578.36" height="172.83"/>
+  <rect class="cls-20" x="367.06" y="873.77" width="1578.36" height="151.64"/>
+  <rect class="cls-19" x="367.06" y="716.23" width="1578.36" height="148.04"/>
+  <!-- Moved cls-11 and cls-2 elements to render on top -->
+  <polyline points="584.13 1397.29 588.76 1371.05 579.5 1371.05 584.13 1397.29"/>
+  <polyline points="583.95 1211.35 588.58 1185.11 579.32 1185.11 583.95 1211.35"/>
+  <polyline points="586.06 1025.41 590.69 999.18 581.44 999.18 586.06 1025.41"/>
+  <polyline points="590.29 864.27 594.91 838.03 585.66 838.03 590.29 864.27"/>
+  <polyline points="591.34 703.12 595.97 676.89 586.72 676.89 591.34 703.12"/>
+  <polyline points="590.29 541.98 594.91 515.74 585.66 515.74 590.29 541.98"/>
+  <polyline points="764.71 380.84 769.34 354.6 760.08 354.6 764.71 380.84"/>
+  <polyline points="1159.6 178.37 1164.23 152.13 1154.97 152.13 1159.6 178.37"/>
   <text class="cls-11" transform="translate(1073.46 131.41)"><tspan x="0" y="0">c +155,00 m</tspan></text>
   <line class="cls-2" x1="1798.83" y1="174.55" x2="1802.34" y2="149.12"/>
   <line class="cls-2" x1="1798.83" y1="174.55" x2="1814.58" y2="154.28"/>
@@ -603,40 +608,41 @@
   <line class="cls-2" x1="1778.13" y1="14.69" x2="1872.47" y2="14.69"/>
   <line class="cls-2" x1="1736.86" y1="112.57" x2="1778.13" y2="14.69"/>
   <text class="cls-11" transform="translate(1872.47 25.02)"><tspan x="0" y="0">Maks kotehøyde teknisk/heis </tspan></text>
-  <text class="cls-13" transform="translate(63.42 1296.42)"><tspan x="0" y="0">Oluf Onsuns</tspan></text>
-  <text class="cls-13" transform="translate(63.42 1352.72)"><tspan x="0" y="0">Vei</tspan></text>
-  <text class="cls-13" transform="translate(2077.08 1182.87)"><tspan x="0" y="0">Enebakkveien</tspan></text>
-  <polygon points="579.64 1521.24 584.27 1495.01 575.01 1495.01 579.64 1521.24"/>
   <polyline class="cls-2" points="579.64 1521.24 584.27 1495.01 575.01 1495.01 579.64 1521.24"/>
+  <text class="cls-11" transform="translate(499.51 1340.63)"><tspan x="0" y="0">c +125,50 m</tspan></text>
+  <text class="cls-11" transform="translate(495.7 1165.01)"><tspan x="0" y="0">c +130,00 m</tspan></text>
+  <text class="cls-11" transform="translate(508.37 987.56)"><tspan x="0" y="0">c +134,50 m</tspan></text>
+  <text class="cls-11" transform="translate(496.76 816.44)"><tspan x="0" y="0">c +138,40 m</tspan></text>
+  <text class="cls-11" transform="translate(489.36 654.84)"><tspan x="0" y="0">c +142,30 m</tspan></text>
+  <text class="cls-11" transform="translate(495.7 499.58)"><tspan x="0" y="0">c +146,20 m</tspan></text>
+  <text class="cls-11" transform="translate(662.73 323.18)"><tspan x="0" y="0">c +150,10 m</tspan></text>
+  <text class="cls-11" transform="translate(492.95 1464.91)"><tspan x="0" y="0">c +122,50 m</tspan></text>
+  <!-- Moved cls-3 elements to render on top -->
+  <line class="cls-3" x1="584.13" y1="1349.86" x2="526.49" y2="1349.86"/>
+  <line class="cls-3" x1="583.95" y1="1174.23" x2="522.69" y2="1174.23"/>
+  <line class="cls-3" x1="586.06" y1="996.79" x2="535.36" y2="996.79"/>
+  <line class="cls-3" x1="590.29" y1="825.68" x2="523.75" y2="825.68"/>
+  <line class="cls-3" x1="591.34" y1="664.07" x2="516.35" y2="664.07"/>
+  <line class="cls-3" x1="590.29" y1="508.8" x2="522.69" y2="508.8"/>
+  <line class="cls-3" x1="764.71" y1="332.41" x2="689.72" y2="332.41"/>
+  <line class="cls-3" x1="1159.6" y1="140.64" x2="1100.45" y2="140.64"/>
+  <line class="cls-3" x1="1159.6" y1="178.37" x2="1159.6" y2="140.64"/>
   <line class="cls-3" x1="579.64" y1="1474.14" x2="519.94" y2="1474.14"/>
-  <g>
-    <text class="cls-10" transform="translate(1827.75 1169.21)"><tspan x="0" y="0">Pl 1</tspan></text>
-    <text class="cls-10" transform="translate(1827.75 966.74)"><tspan x="0" y="0">Pl 2</tspan></text>
-    <text class="cls-10" transform="translate(1827.75 805.6)"><tspan x="0" y="0">Pl 3</tspan></text>
-    <text class="cls-10" transform="translate(1827.75 644.46)"><tspan x="0" y="0">Pl 4</tspan></text>
-    <text class="cls-10" transform="translate(1827.75 483.31)"><tspan x="0" y="0">Pl 5</tspan></text>
-    <text class="cls-10" transform="translate(1827.75 322.16)"><tspan x="0" y="0">Pl 6</tspan></text>
-    <text class="cls-10" transform="translate(1827.75 1338.62)"><tspan x="0" y="0">Pl U1</tspan></text>
-    <text class="cls-10" transform="translate(1827.75 1475.1)"><tspan x="0" y="0">Pl U2</tspan></text>
-    <line class="cls-3" x1="584.13" y1="1397.29" x2="584.13" y2="1349.86"/>
-    <text class="cls-11" transform="translate(499.51 1340.63)"><tspan x="0" y="0">c +125,50 m</tspan></text>
-    <line class="cls-3" x1="583.95" y1="1211.35" x2="583.95" y2="1174.23"/>
-    <text class="cls-11" transform="translate(495.7 1165.01)"><tspan x="0" y="0">c +130,00 m</tspan></text>
-    <line class="cls-3" x1="586.06" y1="1025.41" x2="586.06" y2="996.79"/>
-    <text class="cls-11" transform="translate(508.37 987.56)"><tspan x="0" y="0">c +134,50 m</tspan></text>
-    <line class="cls-3" x1="590.29" y1="864.27" x2="590.29" y2="825.68"/>
-    <text class="cls-11" transform="translate(496.76 816.44)"><tspan x="0" y="0">c +138,40 m</tspan></text>
-    <line class="cls-3" x1="591.34" y1="703.12" x2="591.34" y2="664.07"/>
-    <text class="cls-11" transform="translate(489.36 654.84)"><tspan x="0" y="0">c +142,30 m</tspan></text>
-    <line class="cls-3" x1="590.29" y1="541.98" x2="590.29" y2="508.8"/>
-    <text class="cls-11" transform="translate(495.7 499.58)"><tspan x="0" y="0">c +146,20 m</tspan></text>
-    <line class="cls-3" x1="764.71" y1="380.84" x2="764.71" y2="332.41"/>
-    <text class="cls-11" transform="translate(662.73 323.18)"><tspan x="0" y="0">c +150,10 m</tspan></text>
-    <line class="cls-3" x1="579.64" y1="1521.24" x2="579.64" y2="1474.14"/>
-    <text class="cls-11" transform="translate(492.95 1464.91)"><tspan x="0" y="0">c +122,50 m</tspan></text>
-  </g>
-  <rect class="cls-17" x="367.06" y="1224.46" width="1578.36" height="172.83"/>
-  <rect class="cls-16" x="367.06" y="1038.52" width="1578.36" height="172.83"/>
-  <rect class="cls-20" x="367.06" y="873.77" width="1578.36" height="151.64"/>
-  <rect class="cls-19" x="367.06" y="716.23" width="1578.36" height="148.04"/>
+  <line class="cls-3" x1="584.13" y1="1397.29" x2="584.13" y2="1349.86"/>
+  <line class="cls-3" x1="583.95" y1="1211.35" x2="583.95" y2="1174.23"/>
+  <line class="cls-3" x1="586.06" y1="1025.41" x2="586.06" y2="996.79"/>
+  <line class="cls-3" x1="590.29" y1="864.27" x2="590.29" y2="825.68"/>
+  <line class="cls-3" x1="591.34" y1="703.12" x2="591.34" y2="664.07"/>
+  <line class="cls-3" x1="590.29" y1="541.98" x2="590.29" y2="508.8"/>
+  <line class="cls-3" x1="764.71" y1="380.84" x2="764.71" y2="332.41"/>
+  <line class="cls-3" x1="579.64" y1="1521.24" x2="579.64" y2="1474.14"/>
+  <!-- Moved cls-10 elements to render on top -->
+  <text class="cls-10" transform="translate(1827.75 1169.21)"><tspan x="0" y="0">Pl 1</tspan></text>
+  <text class="cls-10" transform="translate(1827.75 966.74)"><tspan x="0" y="0">Pl 2</tspan></text>
+  <text class="cls-10" transform="translate(1827.75 805.6)"><tspan x="0" y="0">Pl 3</tspan></text>
+  <text class="cls-10" transform="translate(1827.75 644.46)"><tspan x="0" y="0">Pl 4</tspan></text>
+  <text class="cls-10" transform="translate(1827.75 483.31)"><tspan x="0" y="0">Pl 5</tspan></text>
+  <text class="cls-10" transform="translate(1827.75 322.16)"><tspan x="0" y="0">Pl 6</tspan></text>
+  <text class="cls-10" transform="translate(1827.75 1338.62)"><tspan x="0" y="0">Pl U1</tspan></text>
+  <text class="cls-10" transform="translate(1827.75 1475.1)"><tspan x="0" y="0">Pl U2</tspan></text>
 </svg>
