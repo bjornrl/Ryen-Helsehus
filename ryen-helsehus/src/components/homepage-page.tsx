@@ -10,9 +10,9 @@ export default function HomepagePage({
   scrollToFormRef,
 }: HomepagePageProps) {
   return (
-    <div className="h-full overflow-y-auto bg-slate-100">
+    <div className="h-full overflow-y-auto bg-slate-100 scrollbar-hide">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative h-full flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -82,7 +82,7 @@ export default function HomepagePage({
             <div className="w-full flex justify-center mt-20">
               <button
                 onClick={onNavigateToOverview}
-                className="px-8 py-4 text-lg font-semibold text-white rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+                className="px-8 py-4 text-lg font-semibold text-white rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:cursor-pointer"
                 style={{
                   background:
                     "linear-gradient(133deg, rgba(30,41,59,0.95) 0%, rgba(51,65,85,0.95) 100%)",
