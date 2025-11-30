@@ -35,6 +35,7 @@ export const elementPopupTextsMap: Record<
       title: "Atrium",
       description:
         "For å slippe inn mer lys, samt for å tenke langsiktig med den mulige utviklingen av nabotomta, er det tenkt å ha et atrium i bygget.",
+      image: "/images/atrium.png",
     },
     "cls-12": {
       title: "Intern heis / Vareheis",
@@ -65,6 +66,7 @@ export const elementPopupTextsMap: Record<
       title: "Felles inngang",
       description:
         "Vi ser for oss ett felles inngangsparti for hele bygget, med en husvert og innsjekk for besøkende. Her vil de besøkende kunne bli vist rett til etasjen eller tjenesten de skal til, eller få muligheten til å vente i kaféen.",
+      image: "/images/fellesinngang.jpg",
     },
   },
   // E2 (Andre etasje)
@@ -93,6 +95,7 @@ export const elementPopupTextsMap: Record<
       title: "Ventesone for pasienter",
       description:
         "I 2. etajse er den planlagt for en mindre ventesone for pasienter. Resepsjonen og kaféen i 1. etasje er ment å fungere som primær ventesone.",
+      image: "/images/ventesone.jpg",
     },
     "cls-19": {
       title: "Fysiorom",
@@ -108,6 +111,7 @@ export const elementPopupTextsMap: Record<
       title: "Gangbane",
       description:
         "Vi ønsker å lage en dedikert gangbane for pasienter som har behov for dette. Her kan man tenke kreativt og dele opp gangen ved hjelp av hyller og skap som kan fungere som en skillevegg.",
+      image: "/images/gang.png",
     },
     "cls-21": {
       title: "Intern trapp",
@@ -118,6 +122,12 @@ export const elementPopupTextsMap: Record<
       title: "Trappeoppgang",
       description:
         "Vi ønsker at alle som kan ta trappen, gjør det. Det vil naturligvis være positivt for egen helse, men også for flyten av mennesker gjennom bygget. Designet av trappeoppgangen vil derfor være spesielt inviterende.",
+    },
+    "cls-13": {
+      title: "Plastrom",
+      description:
+        "Plastrommet er et spesialisert rom for arbeid med plastmaterialer og gipsarbeid. Dette rommet er viktig for produksjonen av ortopediske hjelpemidler.",
+      image: "/images/verksted.png",
     },
   },
   // E3 (Tredje etasje)
@@ -161,6 +171,7 @@ export const elementPopupTextsMap: Record<
       title: "Verksted",
       description:
         "Vi ser for oss at verkstedet blir et sted der man kun oppholder seg når man skal jobbe med verktøyene som er der, mens alle andre oppgaver utføres enten i arbeidsrommene eller det åpne landskapet.",
+      image: "/images/arbeidsplass.png",
     },
     "cls-9": {
       title: "Intern heis",

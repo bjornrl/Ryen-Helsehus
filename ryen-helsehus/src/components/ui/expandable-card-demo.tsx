@@ -44,6 +44,7 @@ const clickableClassesByFile: Record<string, string[]> = {
     "cls-14", // Gangbane
     "cls-21", // Intern trapp
     "cls-1", // Trappeoppgang
+    "cls-13", // Plastrom
   ],
   "E3.svg": [
     "cls-1", // Trappeoppgang

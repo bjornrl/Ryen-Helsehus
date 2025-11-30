@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Greve";
-  src: url("/fonts/greve-variable.ttf") format("truetype");
+  font-family: "Rational";
+  src: url("/fonts/Rational.otf") format("opentype");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;

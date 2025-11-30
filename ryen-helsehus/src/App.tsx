@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import HomepagePage from "./components/homepage-page";
 import OverviewPage from "./components/overview-page";
 import AboutPage from "./components/about-page";
@@ -7,6 +7,34 @@ type PageKey = "fortelling" | "medvirkning" | "about";
 
 function App() {
   const [page, setPage] = useState<PageKey>("fortelling");
+  const formRef = useRef<HTMLDivElement>(null);
+  const [shouldScrollToForm, setShouldScrollToForm] = useState(false);
+
+  // Handle scrolling to form when on homepage
+  useEffect(() => {
+    if (page === "fortelling" && shouldScrollToForm && formRef.current) {
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        setShouldScrollToForm(false);
+      }, 100);
+    }
+  }, [page, shouldScrollToForm]);
+
+  const handleFormNavigation = () => {
+    if (page === "fortelling") {
+      // Already on homepage, just scroll
+      if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    } else {
+      // Navigate to homepage and scroll
+      setPage("fortelling");
+      setShouldScrollToForm(true);
+    }
+  };
 
   return (
     <div className="h-screen bg-slate-300 text-white flex flex-col overflow-hidden py-2 px-4 sm:px-2 gap-2">
@@ -16,7 +44,7 @@ function App() {
             <p
               className="text-xl sm:text-2xl font-bold text-white"
               style={{
-                fontFamily: "Greve, sans-serif",
+                fontFamily: "Rational, sans-serif",
                 mixBlendMode: "difference",
               }}
             >
@@ -77,7 +105,7 @@ function App() {
                 e.currentTarget.style.color = "#312e81";
               }}
             >
-              Medvirknings-planer
+              Medvirkning
             </button>
             <button
               onClick={() => setPage("about")}
@@ -106,39 +134,33 @@ function App() {
             >
               Rendere og bilder fra prosessen
             </button>
-            {/* <button
-              type="button"
-              onClick={() => setPage("fortelling")}
-              className={`px-4 py-2 text-sm font-medium transition uppercase tracking-wide ${
-                page === "fortelling"
-                  ? "text-neutral-900 font-semibold"
-                  : "text-neutral-500 hover:text-neutral-700"
-              }`}
-            >
-              Hjem
-            </button>
             <button
-              type="button"
-              onClick={() => setPage("medvirkning")}
-              className={`px-4 py-2 text-sm font-medium transition uppercase tracking-wide ${
-                page === "medvirkning"
-                  ? "text-neutral-900 font-semibold"
-                  : "text-neutral-500 hover:text-neutral-700"
-              }`}
+              onClick={handleFormNavigation}
+              className="px-4 py-2 text-black rounded-full transition-colors font-medium text-md whitespace-nowrap"
+              style={{
+                boxShadow:
+                  "0 4px 32px 0 rgba(30,41,59,0.20), 0 1.5px 8px 0 rgba(255,255,255,0.14) inset",
+                border: "1.5px solid rgba(224,231,255,0.27)",
+                background:
+                  "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                transition: "background 0.3s, color 0.3s",
+                cursor: "pointer",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background =
+                  "linear-gradient(133deg, rgba(100,116,139,0.10) 0%, rgba(203,213,225,0.25) 100%)";
+                e.currentTarget.style.color = "#fff";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background =
+                  "linear-gradient(133deg, rgba(255,255,255,0.36) 0%, rgba(203,213,225,0.18) 100%)";
+                e.currentTarget.style.color = "#312e81";
+              }}
             >
-              Medvirknings-planer
+              Spørreskjema
             </button>
-            <button
-              type="button"
-              onClick={() => setPage("about")}
-              className={`px-4 py-2 text-sm font-medium transition uppercase tracking-wide ${
-                page === "about"
-                  ? "text-neutral-900 font-semibold"
-                  : "text-neutral-500 hover:text-neutral-700"
-              }`}
-            >
-              Rendere og bilder fra prosessen
-            </button> */}
           </nav>
         </div>
       </header>
@@ -149,7 +171,10 @@ function App() {
         }`}
       >
         {page === "fortelling" && (
-          <HomepagePage onNavigateToOverview={() => setPage("medvirkning")} />
+          <HomepagePage
+            onNavigateToOverview={() => setPage("medvirkning")}
+            scrollToFormRef={formRef}
+          />
         )}
         {page === "medvirkning" && <OverviewPage />}
         {page === "about" && <AboutPage />}
