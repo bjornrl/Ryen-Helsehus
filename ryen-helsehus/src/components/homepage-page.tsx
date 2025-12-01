@@ -62,13 +62,13 @@ export default function HomepagePage({
             </h2>
             <p className="text-2xl text-slate-700 mb-4 text-center leading-relaxed">
               Det planlegges i dag for å flytte til et nytt helsebygg på Ryen.
-              Ambisjonene våre for å flytte til dette bygget - utover at vi nye
-              og kule lokaler - er at det skal legge til rette for faglig
-              utvikling, både intern for oss i OT, og i samarbeid med de andre
-              leietakerne der.
+              Ambisjonene våre for å flytte til dette bygget - utover at vi
+              ønsker nye og tilpassede lokaler - er at det skal legge til rette
+              for faglig utvikling, både intern for oss i OT, og i samarbeid med
+              de andre leietakerne der
             </p>
             <p className="text-2xl text-slate-700 text-center leading-relaxed">
-              Vi ønsker derfor å invitere alle ansatte på ortopediteknikk Ryen
+              Vi ønsker derfor å invitere alle ansatte på Ortopediteknikk Ryen
               til å være med å påvirke denne prosessen. Utgangspunktet for det
               du ser på denne nettsiden kommer fra workshoper gjort med ansatte
               og ledelsen her på OT det siste året, og et tett samarbeid med
@@ -77,7 +77,7 @@ export default function HomepagePage({
               helsebygget, og avgi dine tanker og ønsker i spørreskjemaet der,
               så vil ledelsen ta disse opp med utbyggerne og arkitektene. På
               siden "Rendere og bilder fra prosessen" kan du se flere
-              inspirasjonsbilder fra Grape.
+              inspirasjonsbilder fra Grape Architects.
             </p>
             <div className="w-full flex justify-center mt-20">
               <button
