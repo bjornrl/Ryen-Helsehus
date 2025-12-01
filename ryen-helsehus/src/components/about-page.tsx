@@ -4,7 +4,7 @@ const storyContent = [
   {
     title: "Første etasje",
     description: "Visualisering av innsiden av første etasje.",
-    image: "/images/plan_01_møblert.jpg",
+    image: "/images/fellesinngang.jpg",
   },
   {
     title: "Illustrasjon Interiør",
@@ -36,9 +36,9 @@ const storyContent = [
     image: "/images/utenfor-farget.jpg",
   },
   {
-    title: "Kontorer",
+    title: "Kontorer sett fra atriumet",
     description: "Illustrasjon av kontorer sett utenifra.",
-    image: "/images/kontorer.png",
+    image: "/images/atrium.png",
   },
   {
     title: "Illustrasjon av første etasje.",
